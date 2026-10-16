@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Le Grenier de Mamie</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='8' width='28' height='20' rx='2' fill='%23d4a974'/%3E%3Crect x='2' y='8' width='28' height='5' fill='%23c39660'/%3E%3Crect x='13' y='8' width='6' height='20' fill='%23eee0b9'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#1b1714;--panel:#26201b;--line:#3a312a;--text:#e9e1d6;--dim:#9b8f80;--acc:#d9a35b;--mamie:#d79ac0}
+body[data-z="1"]{--bg:#17151a;--panel:#211e24;--line:#36303a;--acc:#c9ad85}
+body[data-z="2"]{--bg:#1d1514;--panel:#2a1d1b;--line:#43302c;--acc:#e0805f}
+body[data-z="3"]{--bg:#14181d;--panel:#1d232a;--line:#2f3945;--acc:#8fb0d9}
+body[data-z="4"]{--bg:#10162a;--panel:#19213a;--line:#2b3557;--acc:#ef6b6b}
+body[data-z="5"]{--bg:#10201f;--panel:#172c2a;--line:#264541;--acc:#e3c27a}
+body[data-z="6"]{--bg:#0d1430;--panel:#16204a;--line:#2a3870;--acc:#a9c7ff}
+body[data-z="7"]{--bg:#201a10;--panel:#2c2416;--line:#4a3c22;--acc:#f0c674}
+body[data-z="8"]{--bg:#121b17;--panel:#1b2721;--line:#2c4036;--acc:#9fd3b0}
+body[data-z="9"]{--bg:#1f141b;--panel:#2b1c26;--line:#47303f;--acc:#e3a1c7}
+body[data-z="10"]{--bg:#e9dfcd;--panel:#f6efe2;--line:#d6c7ad;--text:#2b231a;--dim:#7a6b58;--acc:#b5651d;--mamie:#a3366f}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background-color:var(--bg);color:var(--text);font:15px/1.45 Georgia,serif;transition:background-color 1.5s,color 1.5s}
+body[data-z="0"],body[data-z="1"],body[data-z="7"]{background-image:repeating-linear-gradient(90deg,transparent 0 140px,rgba(0,0,0,.25) 140px 156px)}
+body[data-z="2"]{background-image:repeating-linear-gradient(0deg,transparent 0 22px,rgba(0,0,0,.2) 22px 24px)}
+body[data-z="3"]{background-image:repeating-linear-gradient(0deg,transparent 0 31px,rgba(143,176,217,.07) 31px 32px),repeating-linear-gradient(90deg,transparent 0 31px,rgba(143,176,217,.04) 31px 32px)}
+body[data-z="4"]{background-image:linear-gradient(90deg,rgba(70,100,220,.14) 0 33%,transparent 33% 67%,rgba(230,70,70,.12) 67%)}
+body[data-z="5"]{background-image:repeating-linear-gradient(45deg,transparent 0 40px,rgba(227,194,122,.06) 40px 42px)}
+body[data-z="6"]{background-image:radial-gradient(1px 1px at 20% 30%,#fffa 50%,transparent),radial-gradient(1px 1px at 70% 60%,#fff8 50%,transparent),radial-gradient(1.5px 1.5px at 40% 80%,#fff9 50%,transparent),radial-gradient(1px 1px at 85% 15%,#fffa 50%,transparent),linear-gradient(#0d1430,#22357a);background-size:200px 200px,260px 260px,330px 330px,180px 180px,100% 100%;background-attachment:fixed}
+body[data-z="8"]{background-image:repeating-linear-gradient(90deg,transparent 0 60px,rgba(159,211,176,.06) 60px 62px)}
+body[data-z="9"]{background-image:radial-gradient(circle at 50% 0,rgba(227,161,199,.18),transparent 65%);background-attachment:fixed}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;max-width:1300px;margin:auto}
+h1{font-size:20px;margin:0;font-weight:normal;letter-spacing:.5px}
+main{display:grid;grid-template-columns:minmax(260px,330px) minmax(0,1fr) minmax(0,1.1fr);gap:14px;padding:0 14px 14px;max-width:1300px;margin:auto;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0;transition:background-color 1.5s,border-color 1.5s}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:18px 0 8px;font-weight:normal}
+h2:first-child{margin-top:0}
+.small{color:var(--dim);font-size:13px}
+.zone{font-size:22px;line-height:1.2;margin-top:2px}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:10px 0 14px}
+.bar i{display:block;height:100%;background:var(--acc);width:0;transition:width .2s}
+#sort{display:flex;align-items:center;justify-content:center;width:100%;height:150px;border:0;border-radius:6px;cursor:pointer;position:relative;overflow:hidden;font:bold 20px/1 Georgia,serif;letter-spacing:2px;color:#4e3418;background:linear-gradient(180deg,#d9b380 0 46%,#c39660 46% 54%,#d4a974 54%);box-shadow:inset 0 -12px 0 rgba(0,0,0,.12),0 6px 0 #7d5630;user-select:none;-webkit-tap-highlight-color:transparent}
+#sort::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:48px;margin-left:-24px;background:rgba(238,224,185,.5)}
+#sort span{position:relative;background:#f3e6c8;padding:8px 14px;border:2px solid #4e3418;border-radius:3px}
+#sort:active{transform:translateY(3px);box-shadow:inset 0 -12px 0 rgba(0,0,0,.12),0 3px 0 #7d5630}
+#sort.shake{animation:shake .18s}
+@keyframes shake{30%{transform:rotate(-1.2deg)}70%{transform:rotate(1.2deg)}}
+#sort:disabled{opacity:.5;cursor:default}
+.fx{position:absolute;pointer-events:none;font-size:16px;color:#4e3418;font-weight:bold;animation:fx .8s ease-out forwards}
+@keyframes fx{to{transform:translateY(-40px);opacity:0}}
+#phone{display:block;width:100%;margin-top:12px;padding:12px 0;font:inherit;font-size:17px;background:none;color:var(--mamie);border:2px solid var(--mamie);border-radius:8px;cursor:pointer;animation:ring .5s ease-in-out infinite alternate}
+#phone[hidden]{display:none}
+@keyframes ring{from{transform:rotate(-1deg)}to{transform:rotate(1deg)}}
+#last{min-height:2.8em;margin-top:10px;font-style:italic;color:var(--dim);font-size:14px}
+.money{font-size:30px;margin:6px 0 2px}
+.boost{color:var(--mamie)}
+#toast{margin-top:10px;color:var(--acc);font-size:14px;opacity:0}
+#toast.on{animation:toast 3.5s ease-out}
+@keyframes toast{0%{opacity:0;transform:translateY(6px)}10%,80%{opacity:1;transform:none}100%{opacity:0}}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:12px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);color:var(--dim);cursor:default}
+.chip.stat{color:var(--text);border-color:var(--acc)}
+.chip.on{color:var(--bg);background:var(--acc);border-color:var(--acc)}
+.up{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;width:100%;text-align:left;font:inherit;background:rgba(0,0,0,.14);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:9px 11px;margin-bottom:7px;cursor:pointer}
+.up:hover:not(:disabled){border-color:var(--acc)}
+.up:disabled{opacity:.5;cursor:default}
+.up b{font-weight:normal;color:var(--acc)}
+.up .n{color:var(--dim);font-size:13px}
+.up .c{text-align:right;white-space:nowrap}
+.up .d{grid-column:1/-1;color:var(--dim);font-size:13px}
+.up .pips{grid-column:1/-1;height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:3px}
+.up .pips i{display:block;height:100%;background:var(--acc)}
+.find{font-size:13px;margin-bottom:4px}
+.find em{color:var(--acc);font-style:normal}
+.find.t{color:var(--dim);text-decoration:line-through}
+.hbtn{font:inherit;font-size:13px;background:none;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer}
+#jsec{background-color:#f4ecd8;color:#2f2618;border-color:#d8cba9;background-image:linear-gradient(90deg,transparent 0 30px,rgba(200,70,70,.35) 30px 31px,transparent 31px)}
+#jsec h2{color:#8a7a5c;padding-left:26px}
+#journal{max-height:78vh;min-height:260px;overflow-y:auto;padding-left:26px;font:15px/26px "Segoe Print","Bradley Hand","Comic Sans MS",cursive;background-image:repeating-linear-gradient(180deg,transparent 0 21px,rgba(70,110,170,.28) 21px 22px,transparent 22px 26px);background-attachment:local}
+#journal p{margin:0;padding:0 4px}
+#journal p.m{color:#a3366f}
+#journal p.g{color:#2b5b9c}
+#journal p.f{color:#2f6b34}
+#journal p.z{font-weight:bold;text-decoration:underline;text-decoration-color:rgba(181,101,29,.5)}
+#journal p.new{animation:ink 1.6s ease-out}
+@keyframes ink{from{opacity:0;background:rgba(255,214,110,.7)}30%{opacity:1}}
+#banner{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;padding:16px}
+#banner.on{animation:banner 3.4s ease-in-out}
+#banner>div{background:var(--panel);border:1px solid var(--acc);border-radius:12px;padding:22px 34px;text-align:center;box-shadow:0 10px 40px #000a}
+#banner small{display:block;color:var(--dim);letter-spacing:2px;text-transform:uppercase;font-size:12px}
+#banner b{display:block;font-weight:normal;font-size:30px;color:var(--acc);margin-top:4px}
+@keyframes banner{0%{opacity:0;transform:scale(.96)}15%,80%{opacity:1;transform:none}100%{opacity:0}}
+#modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+#modal.on{display:flex}
+#modal>div{background:var(--panel);border:1px solid var(--acc);border-radius:10px;padding:20px;max-width:500px;width:100%;margin:auto}
+#modal h3{margin:0 0 6px;font-weight:normal;font-size:20px;color:var(--acc)}
+#m-d{white-space:pre-line}
+#m-d textarea{display:block;width:100%;margin-top:10px;font:12px/1.4 monospace;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:8px;resize:vertical;white-space:normal;word-break:break-all}
+#modal .btns{display:flex;gap:8px;margin-top:14px}
+#modal button{flex:1;font:inherit;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);cursor:pointer}
+#modal button:hover{border-color:var(--acc)}
+#modal button small{display:block;color:var(--dim);font-size:12px}
+</style>
+</head>
+<body data-z="0">
+<header><h1 id="title"></h1><span><button class="hbtn" id="savebtn"></button> <button class="hbtn" id="lang"></button> <button class="hbtn" id="reset"></button></span></header>
+<main>
+<section>
+  <div class="small" id="zlabel"></div>
+  <div class="zone" id="zone"></div>
+  <div class="bar"><i id="bar"></i></div>
+  <button id="sort"><span id="sortl"></span></button>
+  <button id="phone" hidden></button>
+  <div id="last"></div>
+  <div class="money" id="money"></div>
+  <div class="small" id="rates"></div>
+  <div class="chips" id="counters" style="margin-top:8px"></div>
+  <div id="toast"></div>
+  <h2 id="h-ach"></h2>
+  <div class="small" id="achnote" style="margin-bottom:6px"></div>
+  <div class="chips" id="achs"></div>
+</section>
+<section>
+  <h2 id="h-up"></h2><div id="ups"></div>
+  <h2 id="h-up2"></h2><div id="ups2"></div>
+  <h2 id="h-own"></h2><div class="chips" id="owned"></div>
+  <h2 id="h-finds"></h2><div id="finds"></div>
+</section>
+<section id="jsec"><h2 id="h-j"></h2><div id="journal"></div></section>
+</main>
+<div id="banner"><div><small id="b-s"></small><b id="b-t"></b></div></div>
+<div id="modal"><div><h3 id="m-t"></h3><p id="m-d"></p><div class="btns" id="m-b"></div></div></div>
+<script>
+const L = {
+  fr: {
+    title: `Le Grenier de Mamie`, sort: `TRIER`, ups: `Équipe`, ups2: `Améliorations`, own: `Déjà acheté`, finds: `Trouvailles`, j: `Journal`, ach: `Succès`,
+    reset: `Recommencer`, resetQ: `Tout effacer et recommencer ?`, lang: `EN`,
+    zl: (n, tot, act) => act === 2 ? `Acte II - Zone ${n}/${tot}` : `Zone ${n}/${tot}`, later: `Trois ans plus tard`,
+    rates: (c, s, p) => `${c} objet(s) par clic - ${s} objet(s)/s - ${p} € pièce`,
+    last: (o, p) => `Trié : ${o}. Vendu ${p} €.`,
+    keep: `Garder`, throw: `Jeter`, thrown: `jeté`, none: `Rien pour l'instant.`,
+    away: m => `Pendant ton absence, Gérard a vendu des trucs. Il a gardé la moitié. +${m} €`,
+    phone: s => `Le téléphone sonne... (${s})`, boost: s => `Coup de fil : tout x3 (${s} s)`, act2: `Mamie trie avec toi : tout x10`,
+    achGot: n => `Succès : ${n}`, achBonus: `+2 % au prix de vente par succès.`,
+    end: `Fin`, ok: `Fin`, end1: `Fin de l'acte I`, surprise: `SURPRISE !`, surpriseSub: `Ce n'est pas la fin fin...`, nClicks: `Clics`, nSorted: `Objets triés`, save: `Sauvegarde`, saveD: `Copie ce code pour garder ta partie ailleurs. Pour la récupérer, colle un code ici et clique sur Importer.`, copy: `Copier`, copied: `Copié !`, imp: `Importer`, close: `Fermer`, bad: `Ce code ne ressemble pas à une sauvegarde.`,
+    stats: (tm, c, a, n, s) => `Temps de jeu : ${tm}\nClics : ${c}\nAppels décrochés : ${a} sur ${n}\nObjets triés : ${s}`,
+    achEnd: (n, tot, list) => `Succès : ${n}/${tot}\n${list}`,
+    thanks: `Merci d'avoir joué.\nUn jeu de zuralon.`,
+  },
+  en: {
+    title: `Grandma's Attic`, sort: `SORT`, ups: `Crew`, ups2: `Upgrades`, own: `Already bought`, finds: `Finds`, j: `Journal`, ach: `Achievements`,
+    reset: `Restart`, resetQ: `Erase everything and start over?`, lang: `FR`,
+    zl: (n, tot, act) => act === 2 ? `Act II - Zone ${n}/${tot}` : `Zone ${n}/${tot}`, later: `Three years later`,
+    rates: (c, s, p) => `${c} item(s) per click - ${s} item(s)/s - €${p} each`,
+    last: (o, p) => `Sorted: ${o}. Sold for €${p}.`,
+    keep: `Keep`, throw: `Throw away`, thrown: `thrown away`, none: `Nothing yet.`,
+    away: m => `While you were away, Gerard sold some stuff. He kept half. +€${m}`,
+    phone: s => `The phone is ringing... (${s})`, boost: s => `Phone call: everything x3 (${s}s)`, act2: `Grandma sorts with you: everything x10`,
+    achGot: n => `Achievement: ${n}`, achBonus: `+2% sale price per achievement.`,
+    end: `The End`, ok: `The End`, end1: `End of Act I`, surprise: `SURPRISE!`, surpriseSub: `This isn't the real end...`, nClicks: `Clicks`, nSorted: `Items sorted`, save: `Save`, saveD: `Copy this code to keep your game somewhere safe. To restore it, paste a code here and click Import.`, copy: `Copy`, copied: `Copied!`, imp: `Import`, close: `Close`, bad: `This code doesn't look like a save.`,
+    stats: (tm, c, a, n, s) => `Time played: ${tm}\nClicks: ${c}\nCalls answered: ${a} of ${n}\nItems sorted: ${s}`,
+    achEnd: (n, tot, list) => `Achievements: ${n}/${tot}\n${list}`,
+    thanks: `Thanks for playing.\nA game by zuralon.`,
+  },
+};
+
+// sorted count at the end of act I
+const A1 = 2.5e11;
+
+const Z = [
+  { end: 750, mult: 1, fr: `Le grenier`, en: `The attic`,
+    items: { fr: [`une chaussette seule`, `un fer à repasser`, `37 cintres`, `un sac rempli de sacs`, `un abat-jour sans lampe`, `un vélo d'appartement (porte-manteau)`, `une boîte « ficelles trop courtes »`, `un puzzle de 1000 pièces (812 pièces)`, `une raquette de badminton`, `l'annuaire de 1983`],
+             en: [`a lone sock`, `an iron`, `37 coat hangers`, `a bag full of bags`, `a lampshade with no lamp`, `an exercise bike (coat rack)`, `a box labeled "string too short to use"`, `a 1000-piece puzzle (812 pieces)`, `a badminton racket`, `the 1983 phone book`] } },
+  { end: 9000, mult: 2, fr: `Le grenier derrière le grenier`, en: `The attic behind the attic`,
+    items: { fr: [`un deuxième fer à repasser`, `une valise pleine de valises`, `un sapin en plastique (1 branche)`, `un bocal « VIS DIVERSES »`, `un cheval à bascule qui grince`, `l'encyclopédie (tome 7 seulement)`, `une cocotte-minute sans soupape`, `un tableau de chasse sans chasseur`],
+             en: [`a second iron`, `a suitcase full of suitcases`, `a plastic Christmas tree (1 branch)`, `a jar labeled "ASSORTED SCREWS"`, `a squeaky rocking horse`, `the encyclopedia (volume 7 only)`, `a pressure cooker with no valve`, `a hunting painting with no hunter`] } },
+  { end: 150000, mult: 5, fr: `Le grenier de la rue`, en: `The street attic`,
+    items: { fr: [`le vélo de quelqu'un`, `un carton au nom de quelqu'un d'autre`, `une télé cathodique`, `une porte (sans maison)`, `le chat du numéro 8`, `une machine à coudre`, `un carton de cartons`, `un orgue électrique`, `un mannequin de couture vexé`],
+             en: [`someone's bike`, `a box with someone else's name on it`, `a CRT TV`, `a door (no house)`, `the cat from number 8`, `a sewing machine`, `a box of boxes`, `an electric organ`, `an offended dress mannequin`] } },
+  { end: 1.8e7, mult: 12, fr: `Le grenier de la ville`, en: `The city attic`,
+    items: { fr: [`un parapluie (objets trouvés, 1978)`, `la statue de l'ancien maire`, `un panneau « Travaux » (1994 - ?)`, `l'urne des élections de 1981`, `le sapin municipal`, `un vélo de la Poste`, `le cadastre (version brouillon)`, `les guirlandes du bal des pompiers`, `un rond-point en kit`],
+             en: [`an umbrella (lost and found, 1978)`, `the former mayor's statue`, `a "Roadwork" sign (1994 - ?)`, `the 1981 ballot box`, `the town Christmas tree`, `a postal bike`, `the land registry (draft version)`, `the firemen's ball streamers`, `a flat-pack roundabout`] } },
+  { end: 2.6e8, mult: 30, fr: `Le grenier de la France`, en: `The attic of France`,
+    items: { fr: [`le mètre étalon (une copie, normalement)`, `encore un Minitel`, `les plans d'un aéroport jamais construit`, `la recette du cassoulet (3 versions, 3 procès)`, `une tête de Marianne en plâtre`, `le dossier « à traiter » de 1962`, `une 2CV en kit`, `246 boîtes à fromage (vides)`, `un béret géant`],
+             en: [`the standard meter (a copy, probably)`, `yet another Minitel`, `plans for an airport never built`, `the cassoulet recipe (3 versions, 3 lawsuits)`, `a plaster bust of Marianne`, `the "to do" file from 1962`, `a flat-pack 2CV`, `246 cheese boxes (empty)`, `a giant beret`] } },
+  { end: 1.6e9, mult: 80, fr: `Le grenier du monde`, en: `The attic of the world`,
+    items: { fr: [`une colonne grecque (en trop)`, `la notice de la tour de Pise`, `un livre de la bibliothèque d'Alexandrie (rendu en retard)`, `un Moaï qui fait la tête`, `la couronne de rechange de la Statue de la Liberté`, `la clé de l'Atlantide`, `un carton « Empire romain - divers »`, `un boomerang (revenu)`, `la Grande Muraille (un morceau, pour voir)`],
+             en: [`a Greek column (spare)`, `the Leaning Tower of Pisa manual`, `a book from the Library of Alexandria (overdue)`, `a sulking Moai`, `the Statue of Liberty's spare crown`, `the key to Atlantis`, `a box labeled "Roman Empire - misc"`, `a boomerang (came back)`, `the Great Wall (a sample piece)`] } },
+  { end: 2e10, mult: 200, fr: `Les combles du ciel`, en: `The sky loft`,
+    items: { fr: [`un nuage en forme de carton`, `un mot qu'on avait sur le bout de la langue`, `le nom de cet acteur, là`, `les clés que tout le monde cherche`, `un anniversaire oublié`, `la fin d'un rêve`, `le mot de passe Wi-Fi de 2009`, `le parapluie que tu as oublié dans le train`, `la raison pour laquelle tu étais entré dans la cuisine`],
+             en: [`a box-shaped cloud`, `a word that was on the tip of someone's tongue`, `the name of that actor, you know the one`, `the keys everyone is looking for`, `a forgotten birthday`, `the end of a dream`, `the 2009 Wi-Fi password`, `the umbrella you left on the train`, `the reason you walked into the kitchen`] } },
+  { end: A1, mult: 500, fr: `Le dernier grenier`, en: `The last attic`,
+    items: { fr: [`une boîte à chaussures (à Papy)`, `un carnet de pêche (aucun poisson)`, `une lettre jamais envoyée`, `la tondeuse (l'originale)`, `les photos de Mamie qu'il gardait`, `une barricade en miniature`, `une paire de gants trop grands`, `un gilet avec 14 poches`, `une canne à pêche jamais dépliée`],
+             en: [`a shoebox (Grandpa's)`, `a fishing log (no fish)`, `a letter never sent`, `the lawnmower (the original)`, `the photos of Grandma he kept`, `a miniature barricade`, `a pair of gloves too big`, `a vest with 14 pockets`, `a fishing rod never unfolded`] } },
+  { end: A1 + 1e10, mult: 4, fr: `Le grenier de la résidence`, en: `The retirement home attic`,
+    items: { fr: [`le dentier de M. Robert (il le cherche)`, `1 095 pots de compote vides`, `les lunettes de tout le monde`, `un déambulateur tuné`, `un Scrabble sans voyelles`, `une télécommande universelle (pour rien)`, `un plaid à motif « plaid »`, `le règlement intérieur (version 1987)`],
+             en: [`Mr. Robert's dentures (he's looking for them)`, `1,095 empty applesauce cups`, `everyone's glasses`, `a souped-up walker`, `a Scrabble set with no vowels`, `a universal remote (for nothing)`, `a plaid blanket with a "plaid" pattern`, `the house rules (1987 edition)`] } },
+  { end: A1 + 1e14, mult: 8, fr: `Le grenier de Mamie`, en: `Grandma's own attic`,
+    items: { fr: [`une robe de bal (1967)`, `un pavé (1968, jamais lancé)`, `un carnet de bal avec un seul nom`, `les lettres de Papy (toutes ouvertes)`, `une recette de crêpes (fausse)`, `un ticket de cinéma (le film était nul)`, `une valise prête depuis 1971`, `une photo de toi bébé, en train de pleurer`],
+             en: [`a ball gown (1967)`, `a cobblestone (1968, never thrown)`, `a dance card with one name on it`, `Grandpa's letters (all opened)`, `a crepe recipe (fake)`, `a movie ticket (the film was awful)`, `a suitcase packed since 1971`, `a photo of you as a baby, crying`] } },
+  { end: A1 + 3e19, mult: 16, fr: `Le dernier carton`, en: `The last box`,
+    items: { fr: [`une feuille de papier à lettres`, `un stylo qui marche (rare)`, `un timbre de 2026`, `une enveloppe à ton nom`, `un brouillon raturé`, `un deuxième brouillon`, `le brouillon corrigé par Mamie`],
+             en: [`a sheet of letter paper`, `a pen that works (rare)`, `a 2026 stamp`, `an envelope with your name on it`, `a crossed-out draft`, `a second draft`, `the draft Grandma corrected`] } },
+];
+
+// crew: repeatable up to `max`. upgrades: one-time (k: 0); `need` = [crew id, count owned]
+const U = [
+  { id: `gants`, base: 25, k: 1.6, max: 20, fr: [`Gants de ménage`, `+1 objet par clic. Taille unique, c'est-à-dire aucune.`], en: [`Cleaning gloves`, `+1 item per click. One size fits nobody.`] },
+  { id: `gerard`, base: 300, k: 1.32, max: 25, req: `gerard`, fr: [`Gérard, le voisin`, `+0,5 objet/s. Repart avec un objet à chaque fois. Personne ne sait lequel.`], en: [`Gerard, the neighbor`, `+0.5 item/s. Leaves with one item each time. Nobody knows which.`] },
+  { id: `kevin`, base: 6000, k: 1.32, max: 25, req: `kevin`, fr: [`Cousin Kevin`, `+3 objets/s. Filme tout. Ne trie rien quand il filme.`], en: [`Cousin Kevin`, `+3 items/s. Films everything. Sorts nothing while filming.`] },
+  { id: `benne`, base: 40000, k: 1.32, max: 25, req: `benne`, fr: [`Benne de 10 m³`, `+20 objets/s. Le voisin d'en face y jette ses affaires la nuit.`], en: [`Dumpster`, `+20 items/s. The guy across the street dumps his stuff in it at night.`] },
+  { id: `fonct`, base: 1.5e6, k: 1.32, max: 25, req: `mairie`, fr: [`Agent municipal`, `+150 objets/s. Arrive à 9 h 30, repart à 16 h 45. Entre les deux, il trie.`], en: [`City employee`, `+150 items/s. Arrives at 9:30, leaves at 4:45. In between, he sorts.`] },
+  { id: `dem`, base: 5e08, k: 1.32, max: 25, req: `bretons`, fr: [`Déménageurs bretons`, `+1 000 objets/s. Devis : « On verra. »`], en: [`Breton movers`, `+1,000 items/s. Quote: "We'll see."`] },
+  { id: `cargo`, base: 3e10, k: 1.32, max: 25, req: `cargo`, fr: [`Porte-conteneurs`, `+8 000 objets/s. Il ne devrait pas flotter dans un grenier. Il flotte.`], en: [`Container ship`, `+8,000 items/s. It shouldn't float in an attic. It floats.`] },
+  { id: `mont`, base: 5e12, k: 1.32, max: 25, req: `montgolfiere`, fr: [`Montgolfière`, `+60 000 objets/s. Livre les oublis du jour.`], en: [`Hot air balloon`, `+60,000 items/s. Delivers the day's forgotten things.`] },
+  { id: `petits`, base: 5e13, k: 1.32, max: 25, req: `petits`, fr: [`Petits-enfants du monde`, `+500 000 objets/s. Tous montés un jour. Aucun n'avait trié.`], en: [`Grandchildren of the world`, `+500,000 items/s. They all came up once. None of them sorted.`] },
+
+  { id: `sacs`, base: 1500, k: 0, req: `yaourt`, fr: [`Sacs poubelle 100 L`, `Clics x2. Mamie trouve que c'est du gâchis de sac.`], en: [`Contractor trash bags`, `Clicks x2. Grandma thinks it's a waste of bags.`] },
+  { id: `cafe`, base: 15000, k: 0, need: [`gerard`, 10], fr: [`Café pour Gérard`, `Gérard x3. Il le boit froid, par principe.`], en: [`Coffee for Gerard`, `Gerard x3. He drinks it cold, on principle.`] },
+  { id: `annonces`, base: 25000, k: 0, req: `annonces`, fr: [`Petites annonces`, `Prix de vente x2. « Lot de 412 pots de yaourt, très bon état. »`], en: [`Online listings`, `Sale price x2. "Lot of 412 yogurt pots, mint condition."`] },
+  { id: `brocante`, base: 120000, k: 0, req: `brocante`, fr: [`Stand au vide-grenier`, `Prix de vente x3. Mamie rachète la moitié de ses affaires.`], en: [`Yard sale stand`, `Sale price x3. Grandma buys back half her stuff.`] },
+  { id: `tondelec`, base: 150000, k: 0, need: [`gerard`, 25], fr: [`Tondeuse électrique`, `Gérard x3. Il ne tond rien avec. Il la regarde, ça le motive.`], en: [`Electric lawnmower`, `Gerard x3. He doesn't mow anything with it. He looks at it, it motivates him.`] },
+  { id: `ringlight`, base: 3e5, k: 0, need: [`kevin`, 10], fr: [`Lampe annulaire`, `Kevin x3. Les cartons sont enfin bien éclairés. Kevin aussi.`], en: [`Ring light`, `Kevin x3. The boxes are finally well lit. So is Kevin.`] },
+  { id: `tiktok`, base: 6e5, k: 0, req: `tiktok`, fr: [`Trépied de Kevin`, `Kevin x3. Il trie enfin. « Pour le contenu. »`], en: [`Kevin's tripod`, `Kevin x3. He finally sorts. "For the content."`] },
+  { id: `benne30`, base: 2e6, k: 0, need: [`benne`, 10], fr: [`Benne de 30 m³`, `Bennes x3. Le voisin d'en face a acheté une plus grande voiture pour suivre.`], en: [`30 m³ dumpster`, `Dumpsters x3. The guy across the street bought a bigger car to keep up.`] },
+  { id: `sponsor`, base: 3e6, k: 0, need: [`kevin`, 25], fr: [`Sponsor de Kevin`, `Kevin x3. Une marque de sacs poubelle. Mamie est fière, à sa façon.`], en: [`Kevin's sponsor`, `Kevin x3. A trash bag brand. Grandma is proud, in her own way.`] },
+  { id: `methode`, base: 3e6, k: 0, req: `methode`, fr: [`La méthode Mamie`, `Chaque clic trie aussi 3 % de ta production par seconde. « On ne plie pas, on roule. »`], en: [`Grandma's method`, `Each click also sorts 3% of your per-second production. "You don't fold, you roll."`] },
+  { id: `tampon`, base: 8e6, k: 0, req: `tampon`, fr: [`Tampon officiel`, `Prix de vente x3. Tout ce qui est tamponné a de la valeur.`], en: [`Official stamp`, `Sale price x3. Anything stamped has value.`] },
+  { id: `tri`, base: 2e7, k: 0, need: [`benne`, 25], fr: [`Tri sélectif`, `Bennes x3. Jaune, vert, gris, et une quatrième couleur pour Gérard.`], en: [`Recycling bins`, `Dumpsters x3. Yellow, green, grey, and a fourth color for Gerard.`] },
+  { id: `agrafeuse`, base: 7.5e7, k: 0, need: [`fonct`, 10], fr: [`Agrafeuse électrique`, `Agents municipaux x3. Ils agrafent plus vite. Personne ne sait pourquoi ils agrafent.`], en: [`Electric stapler`, `City employees x3. They staple faster. Nobody knows why they staple.`] },
+  { id: `monument`, base: 5e10, k: 0, req: `monument`, fr: [`Classement monument historique`, `Prix de vente x4. Tu ne peux plus rien jeter. Tu peux tout vendre.`], en: [`Historic monument status`, `Sale price x4. You can't throw anything away. You can sell everything.`] },
+  { id: `prime`, base: 7.5e8, k: 0, need: [`fonct`, 25], fr: [`Prime de fin d'année`, `Agents municipaux x3. Versée en tickets-restaurant de 1994.`], en: [`Year-end bonus`, `City employees x3. Paid in 1994 meal vouchers.`] },
+  { id: `galettes`, base: 2.5e10, k: 0, need: [`dem`, 10], fr: [`Galettes-saucisses`, `Déménageurs x3. Le carburant officiel de la Bretagne.`], en: [`Sausage crepes`, `Movers x3. Brittany's official fuel.`] },
+  { id: `encheres`, base: 1e13, k: 0, req: `encheres`, fr: [`Enchères internationales`, `Prix de vente x5. Un milliardaire achète une chaussette. Elle était seule, c'est rare.`], en: [`International auctions`, `Sale price x5. A billionaire buys a sock. A lone one, very rare.`] },
+  { id: `cidre`, base: 2.5e11, k: 0, need: [`dem`, 25], fr: [`Cidre brut`, `Déménageurs x3. Ils chantent en portant. Les cartons aiment ça.`], en: [`Dry cider`, `Movers x3. They sing while carrying. The boxes like it.`] },
+  { id: `conteneurs`, base: 1.5e12, k: 0, need: [`cargo`, 10], fr: [`Conteneurs pliants`, `Porte-conteneurs x3. On les plie, on ne les froisse pas.`], en: [`Folding containers`, `Container ships x3. You fold them, you don't crumple them.`] },
+  { id: `gantsor`, base: 5e14, k: 0, req: `gantsor`, fr: [`Gants en or`, `Clics x10. Taille unique. Cette fois, c'est la tienne.`], en: [`Golden gloves`, `Clicks x10. One size. This time, it's yours.`] },
+  { id: `capitaine`, base: 1.5e13, k: 0, need: [`cargo`, 25], fr: [`Capitaine Gérard`, `Porte-conteneurs x3. Il n'a pas le permis. Il a un badge.`], en: [`Captain Gerard`, `Container ships x3. He has no license. He has a badge.`] },
+  { id: `vents`, base: 2.5e14, k: 0, need: [`mont`, 10], fr: [`Vents favorables`, `Montgolfières x3. Mamie souffle dans le téléphone pour aider.`], en: [`Tailwinds`, `Hot air balloons x3. Grandma blows into the phone to help.`] },
+  { id: `technique`, base: 1e16, k: 0, req: `technique`, fr: [`La technique de Papy`, `Production x3. Plier, pas froisser.`], en: [`Grandpa's technique`, `Production x3. Fold, don't crumple.`] },
+  { id: `helium`, base: 2.5e15, k: 0, need: [`mont`, 25], fr: [`Hélium de Kevin`, `Montgolfières x3. Kevin parle avec une petite voix. Ses vues explosent.`], en: [`Kevin's helium`, `Hot air balloons x3. Kevin talks in a squeaky voice. His views explode.`] },
+  { id: `gouter`, base: 2.5e15, k: 0, need: [`petits`, 10], fr: [`Le goûter`, `Petits-enfants x3. Pain, chocolat, et un verre de lait que personne ne finit.`], en: [`Afternoon snack`, `Grandchildren x3. Bread, chocolate, and a glass of milk nobody finishes.`] },
+  { id: `poche`, base: 2.5e16, k: 0, need: [`petits`, 25], fr: [`Argent de poche`, `Petits-enfants x3. Un billet de 10 francs chacun. Ils vont revenir.`], en: [`Pocket money`, `Grandchildren x3. A 10-franc note each. They'll come back.`] },
+
+  // act II
+  { id: `residents`, base: 2e11, k: 1.32, max: 25, req: `a2lopez`, fr: [`Résidents`, `+5 millions d'objets/s. Ils trient lentement, mais ils sont nombreux et ils ont le temps.`], en: [`Residents`, `+5 million items/s. They sort slowly, but there are lots of them and they have time.`] },
+  { id: `facteurs`, base: 1.1e18, k: 1.32, max: 25, req: `a2valise`, fr: [`Facteurs`, `+20 milliards d'objets/s. Ils ne savent pas encore ce qu'ils vont livrer. Toi, si.`], en: [`Mail carriers`, `+20 billion items/s. They don't know yet what they'll deliver. You do.`] },
+  { id: `deambulateur`, base: 1.6e14, k: 0, req: `a2robert`, fr: [`Déambulateurs tunés`, `Résidents x3. Monsieur Robert a peint des flammes sur le sien.`], en: [`Souped-up walkers`, `Residents x3. Mr. Robert painted flames on his.`] },
+  { id: `compote`, base: 2.4e14, k: 0, req: `a2compote`, fr: [`Compote à volonté`, `Production x2. Tout le monde trie plus vite à l'approche du dessert.`], en: [`Unlimited applesauce`, `Production x2. Everyone sorts faster when dessert is near.`] },
+  { id: `kevinvrai`, base: 3.3e14, k: 0, req: `a2kevin`, fr: [`Kevin, sans caméra`, `Production x2. Il trie pour de vrai. Mamie n'en revient pas.`], en: [`Kevin, no camera`, `Production x2. He's actually sorting. Grandma can't believe it.`] },
+  { id: `loto`, base: 9.2e16, k: 0, need: [`residents`, 25], fr: [`Loto du jeudi`, `Résidents x3. Le gagnant trie en premier. Madame Lopez gagne toujours.`], en: [`Thursday bingo`, `Residents x3. The winner sorts first. Mrs. Lopez always wins.`] },
+  { id: `carnet`, base: 2.5e18, k: 0, req: `a2bal`, fr: [`Carnet de bal`, `Clics x5. Un seul nom dedans. Ça donne de l'élan.`], en: [`Dance card`, `Clicks x5. Only one name in it. It gives you momentum.`] },
+  { id: `valise`, base: 2.2e19, k: 0, req: `a2valise`, fr: [`La valise de 1971`, `Production x3. Prête à partir depuis 1971. Tes cartons aussi, maintenant.`], en: [`The 1971 suitcase`, `Production x3. Ready to leave since 1971. So are your boxes now.`] },
+  { id: `motpapy`, base: 8.3e19, k: 0, req: `a2papy`, fr: [`Le mot de Papy`, `Production x3. Mamie l'a mis dans sa poche. Elle trie plus vite. Elle le cache mal.`], en: [`Grandpa's note`, `Production x3. Grandma put it in her pocket. She sorts faster. She hides it badly.`] },
+  { id: `timbre`, base: 1.5e21, k: 0, need: [`facteurs`, 10], fr: [`Timbres de 2026`, `Facteurs x3. Personne ne vérifie la date.`], en: [`2026 stamps`, `Mail carriers x3. Nobody checks the date.`] },
+  { id: `stylo`, base: 5.4e23, k: 0, req: `a2enveloppe`, fr: [`Un stylo qui marche`, `Clics x5. Rare. Tu ne le prêtes à personne.`], en: [`A pen that works`, `Clicks x5. Rare. You don't lend it to anyone.`] },
+  { id: `brouillon`, base: 5e23, k: 0, req: `a2comprends`, fr: [`Les brouillons de Mamie`, `Production x3. Elle corrige tout, même ce qui était juste.`], en: [`Grandma's drafts`, `Production x3. She corrects everything, even what was right.`] },
+  { id: `viral`, base: 3.8e23, k: 0, req: `a2viral`, fr: [`Mamie virale`, `Prix de vente x3. Tout le monde veut un objet trié par Mamie.`], en: [`Viral Grandma`, `Sale price x3. Everyone wants something Grandma sorted.`] },
+  { id: `tondeuse3`, base: 1.5e24, k: 0, req: `a2tondeuse`, fr: [`La tondeuse de Gérard`, `Production x3. Elle tond aussi les cartons. Personne n'avait essayé.`], en: [`Gerard's lawnmower`, `Production x3. It mows boxes too. Nobody had tried.`] },
+  { id: `motcompte`, base: 6e23, k: 0, req: `a2triple`, fr: [`Mot compte triple`, `Production x3. Madame Lopez compte les points. Elle triche, mais en ta faveur.`], en: [`Triple word score`, `Production x3. Mrs. Lopez keeps score. She cheats, but in your favor.`] },
+  { id: `tournee`, base: 3.4e22, k: 0, need: [`facteurs`, 25], fr: [`Tournée express`, `Facteurs x3. Livraison garantie il y a trois ans.`], en: [`Express route`, `Mail carriers x3. Guaranteed delivery three years ago.`] },
+];
+
+// z = zone index, p = fraction of that zone; `when` overrides
+const E = [
+  { id: `intro`, z: 0, p: 0, fr: `Mamie part en résidence. Elle te confie une mission : vider le grenier. « Il n'y a presque rien », dit-elle.`, en: `Grandma is moving into a retirement home. She gives you one job: empty the attic. "There's hardly anything up there," she says.` },
+  { id: `divers`, z: 0, p: .06, fr: `Un carton marqué DIVERS. Dedans : un carton marqué DIVERS.`, en: `A box labeled MISC. Inside: a box labeled MISC.` },
+  { id: `yaourt`, z: 0, p: .16, fr: `Mamie : « Ne jette pas les pots de yaourt, ça peut servir. » Il y en a 412.`, en: `Grandma: "Don't throw out the yogurt pots, they might come in handy." There are 412.` },
+  { id: `gerard`, z: 0, p: .4, fr: `Gérard, le voisin, passe la tête par la lucarne. « Besoin d'un coup de main ? » Il a déjà ses gants.`, en: `Gerard, the neighbor, pokes his head through the skylight. "Need a hand?" He's already wearing gloves.` },
+  { id: `gerard1`, when: S => S.up.gerard >= 1, fr: `Gérard repart avec la tondeuse. « Je te la rends demain. »`, en: `Gerard leaves with the lawnmower. "I'll bring it back tomorrow."` },
+  { id: `noel`, z: 0, p: .68, fr: `Un carton marqué NE PAS OUVRIR. Mamie : « Ouvre-le, c'est les décorations de Noël. » C'est les impôts de 1974.`, en: `A box labeled DO NOT OPEN. Grandma: "Open it, it's the Christmas decorations." It's the 1974 tax returns.` },
+  { id: `z1end`, z: 1, p: 0, fr: `Le grenier est vide. Derrière la dernière étagère, il y a une porte.`, en: `The attic is empty. Behind the last shelf, there's a door.` },
+  { id: `z2`, z: 1, p: 0, fr: `Mamie : « Ah, celui-là. Je l'avais oublié. »`, en: `Grandma: "Oh, that one. I forgot about that one."` },
+  { id: `plusgrand`, z: 1, p: .055, fr: `Le grenier derrière le grenier est plus grand que le grenier. Tu décides de ne pas y penser.`, en: `The attic behind the attic is bigger than the attic. You decide not to think about it.` },
+  { id: `kevin`, z: 1, p: .127, fr: `Ton cousin Kevin arrive « pour aider ». Il a une perche à selfie.`, en: `Your cousin Kevin shows up "to help". He brought a selfie stick.` },
+  { id: `kevin1`, when: S => S.up.kevin >= 1, fr: `Kevin filme un carton pendant 40 minutes. La vidéo fait 3 vues. Toutes de Mamie.`, en: `Kevin films a box for 40 minutes. The video gets 3 views. All from Grandma.` },
+  { id: `annonces`, z: 1, p: .27, fr: `Mamie : « Tu pourrais vendre deux-trois trucs sur l'internet. » Elle dit « l'internet » comme on dit « la grippe ».`, en: `Grandma: "You could sell a few things on the internet." She says "the internet" the way people say "the flu".` },
+  { id: `tondeuse`, z: 1, p: .49, fr: `Gérard rapporte la tondeuse. Plus une deuxième tondeuse, qui n'est à personne. Il a l'air fatigué.`, en: `Gerard brings back the lawnmower. Plus a second lawnmower that belongs to nobody. He looks tired.` },
+  { id: `z2end`, z: 2, p: 0, fr: `Au fond, un escalier qui monte. Un grenier n'a pas d'étage au-dessus. Celui-ci, si.`, en: `At the back, a staircase going up. An attic has nothing above it. This one does.` },
+  { id: `z3`, z: 2, p: 0, fr: `En haut, un couloir. Tous les greniers de la rue sont reliés. Personne ne l'avait remarqué. Mamie : « Évidemment. Comment tu crois qu'on se prêtait le sucre ? »`, en: `Upstairs, a hallway. Every attic on the street is connected. Nobody had noticed. Grandma: "Obviously. How do you think we borrowed sugar?"` },
+  { id: `pinto`, z: 2, p: .043, fr: `Madame Pinto, du numéro 12, te demande de ne pas toucher à ses cartons. Ce sont les cartons de Mamie.`, en: `Mrs. Pinto from number 12 asks you not to touch her boxes. They're Grandma's boxes.` },
+  { id: `benne`, z: 2, p: .085, fr: `La mairie : « Une benne ? Pour un grenier ? » Tu envoies une photo. La benne arrive le lendemain.`, en: `City hall: "A dumpster? For an attic?" You send a photo. The dumpster arrives the next morning.` },
+  { id: `residence`, z: 2, p: .19, fr: `Mamie appelle de la résidence. « Ils ont un grenier ici aussi. Je n'y suis pas montée. Je ne monte plus. »`, en: `Grandma calls from the retirement home. "They have an attic here too. I haven't gone up. I don't go up anymore."` },
+  { id: `brocante`, z: 2, p: .3, fr: `Le comité des fêtes t'offre un stand au vide-grenier. Le thème cette année : « Vider des greniers ».`, en: `The town committee offers you a stand at the yard sale. This year's theme: "Emptying attics".` },
+  { id: `philo`, z: 2, p: .53, fr: `Gérard s'assoit sur un carton. « Tu sais, petit, c'est pas les greniers qui sont pleins. C'est le monde qui est vide. » Puis il repart avec le carton.`, en: `Gerard sits on a box. "You know, kid, it's not the attics that are full. It's the world that's empty." Then he leaves with the box.` },
+  { id: `papy`, z: 2, p: .7, fr: `Sur une poutre, quelqu'un a gravé : « Ici, j'ai abandonné. 1952. » C'est l'écriture de Papy.`, en: `Someone carved into a beam: "Here, I gave up. 1952." It's Grandpa's handwriting.` },
+  { id: `z3end`, z: 3, p: 0, fr: `Au bout du couloir, une trappe. Au-dessus : le grenier de la ville. Mamie : « Bon. Il faudra que je te parle de ton grand-père. »`, en: `At the end of the hallway, a hatch. Above it: the city attic. Grandma: "Right. One day I'll have to tell you about your grandfather."` },
+  { id: `ville`, z: 3, p: 0, fr: `Le grenier de la ville sent le papier et la décision reportée. Mamie : « Ton grand-père y montait le dimanche. Il disait qu'il allait à la pêche. »`, en: `The city attic smells of paper and postponed decisions. Grandma: "Your grandfather used to go up there on Sundays. He said he was going fishing."` },
+  { id: `tiktok`, z: 3, p: .06, fr: `Kevin passe en compte pro. Il s'est acheté un trépied. Il dit que ça change tout.`, en: `Kevin went pro. He bought a tripod. He says it changes everything.` },
+  { id: `formulaire`, z: 3, p: .1, fr: `Un agent te demande ton autorisation de trier. Le formulaire est dans le grenier. Quelque part.`, en: `A clerk asks for your sorting permit. The form is in the attic. Somewhere.` },
+  { id: `mairie`, z: 3, p: .15, fr: `La mairie détache du personnel. Ils arrivent en file indienne, avec leur propre agrafeuse.`, en: `City hall sends staff. They arrive in single file, each with their own stapler.` },
+  { id: `methode`, z: 3, p: .3, fr: `Mamie : « Tu plies mal. On ne plie pas, on roule. » Elle t'explique pendant 40 minutes. Ça marche.`, en: `Grandma: "You're folding it wrong. You don't fold, you roll." She explains for 40 minutes. It works.` },
+  { id: `objtrouves`, z: 3, p: .38, fr: `Tu retrouves le bureau des objets trouvés. Il a été perdu en 1987. Personne ne l'avait signalé.`, en: `You find the lost and found office. It went missing in 1987. Nobody reported it.` },
+  { id: `tampon`, z: 3, p: .45, fr: `Le maire te remet un tampon officiel. « Tout ce qui est tamponné a de la valeur. » Il tamponne son sandwich.`, en: `The mayor hands you an official stamp. "Anything stamped has value." He stamps his sandwich.` },
+  { id: `badge`, z: 3, p: .55, fr: `Gérard porte un badge « Personnel municipal ». Personne ne sait qui le lui a donné. Lui non plus.`, en: `Gerard is wearing a "City staff" badge. Nobody knows who gave it to him. Neither does he.` },
+  { id: `giscard`, z: 3, p: .7, fr: `Mamie : « Tu as trouvé ma carte d'électeur ? Je vote toujours pour le même. Il est mort, mais par principe. »`, en: `Grandma: "Did you find my voter card? I always vote for the same man. He's dead, but on principle."` },
+  { id: `chaussettes`, z: 3, p: .85, fr: `Dans une armoire : 4 000 chaussettes seules. Toutes gauches. Les droites sont ailleurs. Plus haut.`, en: `In a cupboard: 4,000 lone socks. All left feet. The right ones are somewhere else. Higher up.` },
+  { id: `z4end`, z: 4, p: 0, fr: `Une échelle en colimaçon traverse le plafond de la mairie. Un panneau : « Archives nationales - accès réservé ». Tu n'as pas d'accès. Tu montes quand même.`, en: `A spiral ladder goes through the city hall ceiling. A sign: "National Archives - authorized access only". You're not authorized. You climb anyway.` },
+  { id: `archives`, z: 4, p: 0, fr: `Des kilomètres d'étagères. Un archiviste te regarde : « Vous êtes de la famille ? » Tu dis oui. D'une certaine façon, c'est vrai.`, en: `Miles of shelves. An archivist looks at you: "Are you family?" You say yes. In a way, it's true.` },
+  { id: `bretons`, z: 4, p: .1, fr: `Une entreprise de déménagement bretonne propose ses services. Ils montent sans rien demander. Ils redescendent sans rien dire.`, en: `A moving company from Brittany offers to help. They come up without asking. They go down without a word.` },
+  { id: `mamieetat`, z: 4, p: .18, fr: `Mamie : « Ne touche pas aux affaires de l'État. Sauf la vaisselle. La vaisselle, c'est la mienne. »`, en: `Grandma: "Don't touch the government's things. Except the dishes. The dishes are mine."` },
+  { id: `secret`, z: 4, p: .25, fr: `Une boîte « SECRETS D'ÉTAT ». Dedans : des notes de frais. Beaucoup de notes de frais.`, en: `A box labeled "STATE SECRETS". Inside: expense reports. A lot of expense reports.` },
+  { id: `monument`, z: 4, p: .35, fr: `Le ministère de la Culture classe ton tas de cartons monument historique. Tu ne peux plus le jeter. Tu peux le vendre, par contre.`, en: `The Ministry of Culture lists your pile of boxes as a historic monument. You can't throw it away anymore. You can sell it, though.` },
+  { id: `live`, z: 4, p: .5, fr: `Kevin fait un live depuis les Archives. 2 millions de vues. Il ne trie toujours rien quand il filme.`, en: `Kevin goes live from the Archives. 2 million views. He still sorts nothing while filming.` },
+  { id: `archiviste`, z: 4, p: .7, fr: `L'archiviste te prend à part. « Il y a un étage au-dessus. Il n'y a jamais d'étage au-dessus. » Il te serre la main et part à la retraite, immédiatement.`, en: `The archivist takes you aside. "There's a floor above. There's never a floor above." He shakes your hand and retires on the spot.` },
+  { id: `boussole2`, z: 4, p: .85, fr: `Quelque part dans tes affaires, une boussole s'affole. Elle indique le haut. Très fort.`, en: `Somewhere in your stuff, a compass goes haywire. It points up. Very hard.` },
+  { id: `z5end`, z: 5, p: 0, fr: `Au sommet des Archives, une trappe. Écrit au feutre : « GRENIER DU MONDE. Attention, plafond bas (aucun). »`, en: `At the top of the Archives, a hatch. Written in marker: "ATTIC OF THE WORLD. Mind your head (no ceiling)."` },
+  { id: `monde`, z: 5, p: 0, fr: `Toutes les civilisations ont rangé leurs affaires ici. Aucune n'a mis d'étiquettes.`, en: `Every civilization has stored its things here. None of them labeled anything.` },
+  { id: `cargo`, z: 5, p: .08, fr: `Un armateur propose un porte-conteneurs. « Il ne flotte pas dans un grenier. » Il flotte quand même.`, en: `A shipowner offers a container ship. "It won't float in an attic." It floats anyway.` },
+  { id: `pyramides`, z: 5, p: .18, fr: `Tu trouves des pyramides de rechange. On en avait fait trop.`, en: `You find spare pyramids. They made too many.` },
+  { id: `egypte`, z: 5, p: .27, fr: `Mamie : « L'Égypte ? On y était en 1974 avec ton grand-père. Il voulait voir le grenier. » Tu commences à comprendre ton grand-père.`, en: `Grandma: "Egypt? We went in 1974 with your grandfather. He wanted to see the attic." You're starting to understand your grandfather.` },
+  { id: `encheres`, z: 5, p: .35, fr: `Les grandes maisons d'enchères s'intéressent à ton stock. Ton stock s'intéresse peu à elles.`, en: `The big auction houses are interested in your stock. Your stock is not very interested in them.` },
+  { id: `pharaon`, z: 5, p: .5, fr: `Gérard trie avec un ancien pharaon. Ils parlent tondeuses.`, en: `Gerard is sorting with a former pharaoh. They're talking lawnmowers.` },
+  { id: `droites`, z: 5, p: .68, fr: `Toutes les chaussettes droites du monde. Il y en a 4 001. Personne n'ose demander pour la dernière.`, en: `All the right socks in the world. There are 4,001. Nobody dares ask about the extra one.` },
+  { id: `recommence`, z: 5, p: .85, fr: `Sur la dernière poutre du monde, gravé : « Ici, j'ai recommencé. 1953. » L'écriture de Papy.`, en: `Carved into the last beam of the world: "Here, I started again. 1953." Grandpa's handwriting.` },
+  { id: `z6end`, z: 6, p: 0, fr: `Le ciel est un plafond. Il y a une trappe dans le ciel. Elle est entrouverte. Il y a de la lumière.`, en: `The sky is a ceiling. There's a hatch in the sky. It's ajar. There's light.` },
+  { id: `ciel`, z: 6, p: 0, fr: `Ici, on range ce que les gens oublient. Les clés, les noms, les parapluies, les anniversaires. Il y a beaucoup d'anniversaires.`, en: `This is where forgotten things go. Keys, names, umbrellas, birthdays. A lot of birthdays.` },
+  { id: `montgolfiere`, z: 6, p: .05, fr: `Une montgolfière accoste. Le pilote livre les oublis du jour : 3 milliards de clés et un parapluie. Le tien.`, en: `A hot air balloon docks. The pilot delivers the day's forgotten things: 3 billion keys and one umbrella. Yours.` },
+  { id: `dessus`, z: 6, p: .12, fr: `Mamie appelle. La ligne grésille. « Tu es où ? » Tu dis : « Au-dessus. » Elle ne dit rien pendant longtemps.`, en: `Grandma calls. The line crackles. "Where are you?" You say: "Above." She says nothing for a long time.` },
+  { id: `gantsor`, z: 6, p: .2, fr: `Tu trouves une paire de gants en or, à ta taille. Dessus, une étiquette : « Pour plus tard. »`, en: `You find a pair of golden gloves, your size. A tag on them: "For later."` },
+  { id: `oublie`, z: 6, p: .35, fr: `Une boîte « Choses que Mamie a oubliées ». Presque vide. Elle a une bonne mémoire. Il y a juste ton prénom, une fois, en 2023. Elle s'est rattrapée.`, en: `A box labeled "Things Grandma forgot". Almost empty. She has a good memory. Just your name, once, in 2023. She caught herself.` },
+  { id: `gerardciel`, z: 6, p: .5, fr: `Gérard est là. Tu ne sais pas comment. Il dit : « Je suis monté. » Il a la tondeuse.`, en: `Gerard is here. You don't know how. He says: "I came up." He has the lawnmower.` },
+  { id: `fredonne`, z: 6, p: .75, fr: `Au loin, quelqu'un trie. Il fredonne. Il a les mêmes gestes que toi. Il roule, il ne plie pas.`, en: `In the distance, someone is sorting. He's humming. He moves the way you do. He rolls, he doesn't fold.` },
+  { id: `z7end`, z: 7, p: 0, fr: `Le dernier grenier. Une seule pièce. Un homme en gilet trie une boîte à chaussures. Il lève la tête. « Ah. Tu as pris ton temps. »`, en: `The last attic. A single room. A man in a vest is sorting a shoebox. He looks up. "Ah. You took your time."` },
+  { id: `papy0`, z: 7, p: 0, fr: `C'est Papy. Il trie ici depuis 2004. « Il faut bien que quelqu'un fasse le dernier grenier. Sinon, tout redescend. »`, en: `It's Grandpa. He's been sorting up here since 2004. "Someone has to do the last attic. Otherwise it all comes back down."` },
+  { id: `petits`, z: 7, p: .1, fr: `Papy : « Tu n'es pas le premier petit-enfant à monter. Juste le premier à trier. » Il siffle. Des milliers de petits-enfants arrivent, avec des cartons.`, en: `Grandpa: "You're not the first grandchild to come up. Just the first one to sort." He whistles. Thousands of grandchildren arrive, carrying boxes.` },
+  { id: `papy1952`, z: 7, p: .25, fr: `Papy : « 1952, j'ai abandonné. 1953, j'ai recommencé. Ta grand-mère m'avait dit : il n'y a presque rien. »`, en: `Grandpa: "1952, I gave up. 1953, I started again. Your grandmother had told me: there's hardly anything up there."` },
+  { id: `papyelle`, z: 7, p: .4, fr: `Papy : « Elle ne monte plus, hein ? » Tu dis non. Il hoche la tête. Il range une photo d'elle dans sa poche de gilet. La quatorzième.`, en: `Grandpa: "She doesn't come up anymore, does she?" You say no. He nods. He tucks a photo of her into his vest pocket. The fourteenth one.` },
+  { id: `technique`, z: 7, p: .5, fr: `Papy t'apprend sa technique. Plier, pas froisser. Garder ce qui fait rire. Jeter ce qui fait peur.`, en: `Grandpa teaches you his technique. Fold, don't crumple. Keep what makes you laugh. Throw out what scares you.` },
+  { id: `tondeuse2`, z: 7, p: .65, fr: `Gérard et Papy se serrent la main. « Il me doit une tondeuse », dit Papy. « Je sais », dit Gérard.`, en: `Gerard and Grandpa shake hands. "He owes me a lawnmower," says Grandpa. "I know," says Gerard.` },
+  { id: `lettre2`, z: 7, p: .8, fr: `La lettre dans ta poche est chaude. Papy : « Tu pourras l'ouvrir en bas. »`, en: `The letter in your pocket is warm. Grandpa: "You can open it downstairs."` },
+  { id: `final`, z: 7, p: 1, fr: `Le dernier grenier est trié. Il reste une boîte, marquée « MAMIE - NE PAS JETER ». Papy te la tend. « Descends-lui. Moi, je ne descends plus. »`, en: `The last attic is sorted. One box is left, labeled "GRANDMA - DO NOT THROW AWAY". Grandpa hands it to you. "Take it down to her. I don't go down anymore."` },
+  { id: `a2intro`, z: 8, p: 0, fr: `Trois ans plus tard. Le téléphone sonne à 3 h du matin. Mamie : « Il y a un grenier ici. Je crois que je vais monter. Tu viens ? »`, en: `Three years later. The phone rings at 3 a.m. Grandma: "There's an attic here. I think I'm going up. Are you coming?"` },
+  { id: `a2monte`, z: 8, p: 0, fr: `Elle monte l'escalier, une marche à la fois. Elle insulte chaque marche par son prénom. En haut, elle retrousse ses manches. Mamie trie avec toi : tout x10.`, en: `She climbs the stairs one step at a time. She calls each step a name. At the top, she rolls up her sleeves. Grandma sorts with you: everything x10.` },
+  { id: `a2lopez`, z: 8, p: .15, fr: `Madame Lopez est montée aussi. Elle trie les affaires des autres. Elle garde les jeux de Scrabble.`, en: `Mrs. Lopez came up too. She sorts other people's things. She keeps the Scrabble sets.` },
+  { id: `a2robert`, z: 8, p: .4, fr: `Monsieur Robert cherche son dentier. Tu lui tends celui de Papy. Il l'essaie. Il dit que ça ira.`, en: `Mr. Robert is looking for his dentures. You hand him Grandpa's. He tries them on. He says they'll do.` },
+  { id: `a2compote`, z: 8, p: .6, fr: `Un carton de pots de compote vides. 1 095. Mamie : « Trois ans. Je t'avais dit que je comptais. »`, en: `A box of empty applesauce cups. 1,095 of them. Grandma: "Three years. I told you I was counting."` },
+  { id: `a2kevin`, z: 8, p: .85, fr: `Kevin arrive. Il ne filme pas. Il trie. Mamie le regarde longtemps, puis dit seulement : « Ah. »`, en: `Kevin arrives. He isn't filming. He's sorting. Grandma watches him for a long time, then just says: "Oh."` },
+  { id: `a2z9`, z: 9, p: 0, fr: `Au fond, une porte avec son nom dessus. Mamie : « Ah. Celui-là, c'est le mien. Il me suit partout. »`, en: `At the back, a door with her name on it. Grandma: "Oh. That one's mine. It follows me everywhere."` },
+  { id: `a2bal`, z: 9, p: .12, fr: `Mamie : « Ton grand-père ne savait pas danser. Il comptait les pas à voix haute. Je l'ai épousé pour le silence entre deux chiffres. »`, en: `Grandma: "Your grandfather couldn't dance. He counted the steps out loud. I married him for the silence between the numbers."` },
+  { id: `a2gerard`, z: 9, p: .35, fr: `Gérard appelle. Il a retrouvé la tondeuse de Papy, la vraie. Il demande s'il peut la garder. Mamie dit oui. Gérard pleure au téléphone.`, en: `Gerard calls. He found Grandpa's lawnmower, the real one. He asks if he can keep it. Grandma says yes. Gerard cries on the phone.` },
+  { id: `a2valise`, z: 9, p: .65, fr: `Une valise prête depuis 1971. Mamie : « Pour partir. » Tu demandes où. « Nulle part. C'était ça, le plus beau. »`, en: `A suitcase packed since 1971. Grandma: "For leaving." You ask where to. "Nowhere. That was the best part."` },
+  { id: `a2papy`, z: 9, p: .85, fr: `Une boîte « POUR QUAND ELLE NE MONTERA PLUS ». Dedans, un mot de Papy : « Tu vois. Tu es montée quand même. »`, en: `A box labeled "FOR WHEN SHE DOESN'T COME UP ANYMORE". Inside, a note from Grandpa: "See? You came up anyway."` },
+  { id: `a2z10`, z: 10, p: 0, fr: `Il ne reste qu'un carton. Mamie s'assoit dessus. « Celui-là, on le fait ensemble. »`, en: `There's only one box left. Grandma sits on it. "This one, we do together."` },
+  { id: `a2viral`, z: 10, p: .15, fr: `Kevin filme Mamie en train de trier. Elle l'autorise, pour une fois. La vidéo s'appelle « Mamie roule, elle ne plie pas ». 40 millions de vues.`, en: `Kevin films Grandma sorting. She allows it, for once. The video is called "Grandma rolls, she doesn't fold". 40 million views.` },
+  { id: `a2enveloppe`, z: 10, p: .3, fr: `Dedans : du papier à lettres, un stylo, un timbre de 2026. Sur l'enveloppe, ton adresse d'il y a trois ans.`, en: `Inside: letter paper, a pen, a 2026 stamp. On the envelope, your address from three years ago.` },
+  { id: `a2tondeuse`, z: 10, p: .45, fr: `Gérard monte avec la tondeuse. Personne ne sait pourquoi. Il tond la moquette du grenier. C'est très efficace.`, en: `Gerard comes up with the lawnmower. Nobody knows why. He mows the attic carpet. It's very effective.` },
+  { id: `a2comprends`, z: 10, p: .6, fr: `Tu comprends. Tu prends le stylo. Mamie lit par-dessus ton épaule. « Écris lisiblement, pour une fois. »`, en: `You understand. You pick up the pen. Grandma reads over your shoulder. "Write legibly, for once."` },
+  { id: `a2triple`, z: 10, p: .8, fr: `Madame Lopez propose un mot compte triple. Mamie accepte. Personne ne sait ce que ça veut dire dans un grenier, mais ça marche.`, en: `Mrs. Lopez offers a triple word score. Grandma accepts. Nobody knows what that means in an attic, but it works.` },
+  { id: `a2fin`, z: 10, p: 1, fr: `Tu écris : « Monte la voir plus souvent. Elle, elle ne monte plus. » Mamie lit. « Menteur. Je suis montée. » Tu l'envoies quand même.`, en: `You write: "Go up and see her more often. She doesn't go up anymore." Grandma reads it. "Liar. I came up." You send it anyway.` },
+];
+
+const F = [
+  { id: `fondue`, z: 0, p: .24, fr: { n: `Service à fondue`, d: `Six fourchettes, sept couleurs.`, e: `Prix de vente +10 %`, k: `Mamie : « Enfin quelqu'un de raisonnable. »`, t: `Mamie : « Tu jettes MON service à fondue ? » Elle raccroche. Elle rappelle pour dire qu'elle a raccroché.` },
+    en: { n: `Fondue set`, d: `Six forks, seven colors.`, e: `Sale price +10%`, k: `Grandma: "Finally, someone sensible."`, t: `Grandma: "You're throwing out MY fondue set?" She hangs up. She calls back to say she hung up.` } },
+  { id: `dentier`, z: 0, p: .84, fr: { n: `Dentier de Papy`, d: `Il mord encore.`, e: `+2 objets par clic`, k: `Mamie : « Garde-le, il t'aimait bien. »`, t: `Mamie : « Il ne s'en servait plus. Papy est parti en 2004. Le dentier, en 1998. »` },
+    en: { n: `Grandpa's dentures`, d: `They still bite.`, e: `+2 items per click`, k: `Grandma: "Keep them, they liked you."`, t: `Grandma: "He wasn't using them anyway. Grandpa passed in 2004. The dentures, in 1998."` } },
+  { id: `calendrier`, z: 1, p: .2, fr: { n: `Calendrier de 1987`, d: `Mamie dit que les jours vont revenir.`, e: `Objets/s +10 %`, k: `Vérification faite : le calendrier de 1987 tombe jour pour jour comme 2026. Mamie avait raison.`, t: `Mamie : « Les jours vont revenir, tu verras. » Vérification faite : 1987 tombe jour pour jour comme 2026.` },
+    en: { n: `1987 calendar`, d: `Grandma says the days will come back around.`, e: `Items/s +10%`, k: `You check: the 1987 calendar lines up day for day with 2026. Grandma was right.`, t: `Grandma: "The days will come back, you'll see." You check: 1987 lines up day for day with 2026.` } },
+  { id: `minitel`, z: 1, p: .38, fr: { n: `Minitel`, d: `Facture jointe : 2 300 francs, mars 1991.`, e: `Gérard travaille 50 % plus vite (nostalgie)`, k: `Gérard regarde le Minitel longtemps. Il trie plus vite depuis.`, t: `Mamie : « Il marche encore, tu sais. » Il ne marche pas.` },
+    en: { n: `Minitel terminal`, d: `Bill attached: 2,300 francs, March 1991.`, e: `Gerard works 50% faster (nostalgia)`, k: `Gerard stares at the Minitel for a long time. He's been sorting faster ever since.`, t: `Grandma: "It still works, you know." It does not.` } },
+  { id: `lettre`, z: 1, p: .64, back: true, fr: { n: `Une lettre à ton nom`, d: `Le cachet de la poste date de dans trois ans.`, e: `Effet : inconnu (pour l'instant)`, k: `Tu la mets dans ta poche. Tu ne l'ouvres pas. Pas encore.`, t: `Tu la jettes. Le lendemain, elle est dans ta boîte aux lettres. Tu la mets dans ta poche.` },
+    en: { n: `A letter addressed to you`, d: `The postmark is dated three years from now.`, e: `Effect: unknown (for now)`, k: `You put it in your pocket. You don't open it. Not yet.`, t: `You throw it away. The next day, it's in your mailbox. You put it in your pocket.` } },
+  { id: `photo`, z: 1, p: .82, fr: { n: `Photo de Mamie, 1968`, d: `Sur une barricade, le poing levé. Elle a 19 ans.`, e: `Clics +50 %`, k: `Mamie : « J'étais venue pour un garçon. Je suis restée pour la barricade. »`, t: `Mamie : « Ah, celle-là. Il y en a un carton entier. »` },
+    en: { n: `Photo of Grandma, 1968`, d: `On a barricade, fist raised. She's 19.`, e: `Clicks +50%`, k: `Grandma: "I went for a boy. I stayed for the barricade."`, t: `Grandma: "Oh, that one. There's a whole box of those."` } },
+  { id: `pot`, z: 2, p: .128, fr: { n: `Le pot de yaourt n° 412`, d: `Le dernier. Il peut servir.`, e: `Objets/s +25 %`, k: `Mamie : « Tu vois. Ça peut servir. » Elle ne dit pas à quoi.`, t: `Mamie : « Tu en avais 411 autres. Pourquoi celui-là ? »` },
+    en: { n: `Yogurt pot #412`, d: `The last one. It might come in handy.`, e: `Items/s +25%`, k: `Grandma: "See? It comes in handy." She doesn't say for what.`, t: `Grandma: "You had 411 others. Why that one?"` } },
+  { id: `boussole`, z: 2, p: .4, fr: { n: `Boussole de Papy`, d: `Elle n'indique pas le nord. Elle indique le haut.`, e: `Objets/s +25 %`, k: `Tu la gardes. Elle indique toujours le haut. Tu commences à comprendre pourquoi.`, t: `Tu la jettes. Elle indique la poubelle.` },
+    en: { n: `Grandpa's compass`, d: `It doesn't point north. It points up.`, e: `Items/s +25%`, k: `You keep it. It still points up. You're starting to understand why.`, t: `You throw it away. It points at the trash.` } },
+  { id: `boutons`, z: 2, p: .83, fr: { n: `Boîte à boutons`, d: `Aucun bouton n'est pareil. Sauf deux.`, e: `Prix de vente +25 %`, k: `Mamie : « Ceux-là, je les garde depuis la guerre. » Laquelle, elle ne précise pas.`, t: `Mamie : « Les deux pareils, c'était à ton grand-père. » Trop tard.` },
+    en: { n: `Button tin`, d: `No two buttons are alike. Except two.`, e: `Sale price +25%`, k: `Grandma: "I've kept those since the war." She doesn't say which one.`, t: `Grandma: "The two matching ones were your grandfather's." Too late.` } },
+  { id: `parapluie`, z: 3, p: .2, fr: { n: `Parapluie, 1978`, d: `Objets trouvés. Personne ne l'a réclamé. Il a attendu.`, e: `Agents municipaux x2`, k: `Tu l'ouvres. Il en tombe un ticket de bus de 1978, composté. Les agents municipaux sont émus. Ils trient deux fois plus.`, t: `Mamie : « C'était le mien ! Je l'ai perdu en 78. Bon, jette-le, il est moche. »` },
+    en: { n: `Umbrella, 1978`, d: `Lost and found. Nobody claimed it. It waited.`, e: `City employees x2`, k: `You open it. A 1978 bus ticket falls out, punched. The city employees are moved. They sort twice as fast.`, t: `Grandma: "That was mine! I lost it in '78. Well, throw it out, it's ugly."` } },
+  { id: `medaille`, z: 3, p: .62, fr: { n: `Médaille du travail de Gérard`, d: `Gravé : « 40 ans de service ». Gérard n'a jamais travaillé.`, e: `Gérard x5`, k: `Tu la rends à Gérard. Il pleure un peu. Il travaille cinq fois plus. Personne ne sait ce qu'elle faisait à la mairie.`, t: `Gérard : « Tu as jeté quoi, là ? » Rien, Gérard. Rien.` },
+    en: { n: `Gerard's long-service medal`, d: `Engraved: "40 years of service". Gerard has never worked.`, e: `Gerard x5`, k: `You give it back to Gerard. He cries a little. He works five times harder. Nobody knows what it was doing at city hall.`, t: `Gerard: "What did you just throw away?" Nothing, Gerard. Nothing.` } },
+  { id: `crepes`, z: 4, p: .28, fr: { n: `La recette des crêpes de Mamie`, d: `Tamponnée SECRET DÉFENSE, 1971.`, e: `Clics x2`, k: `Mamie : « Ne la montre à personne. Surtout pas à l'État. »`, t: `Mamie : « Tu as jeté la recette ? Pas grave, je ne l'ai jamais suivie. »` },
+    en: { n: `Grandma's crepe recipe`, d: `Stamped TOP SECRET, 1971.`, e: `Clicks x2`, k: `Grandma: "Don't show it to anyone. Especially not the government."`, t: `Grandma: "You threw out the recipe? Never mind, I never followed it."` } },
+  { id: `metre`, z: 4, p: .6, fr: { n: `Le mètre étalon`, d: `Le premier. Il mesure 1 mètre et 2 millimètres. Personne n'a osé le dire.`, e: `Prix de vente +25 %`, k: `Tout ce que tu mesures avec est un peu plus grand. Donc un peu plus cher.`, t: `Tu le jettes. Il mesurait la poubelle : 1 mètre et 2 millimètres.` },
+    en: { n: `The standard meter`, d: `The very first one. It's 1 meter and 2 millimeters long. Nobody dared say so.`, e: `Sale price +25%`, k: `Everything you measure with it is slightly bigger. So slightly pricier.`, t: `You throw it away. It measured the trash can: 1 meter and 2 millimeters.` } },
+  { id: `joconde`, z: 5, p: .4, fr: { n: `La Joconde de secours`, d: `Au dos : « En cas de vol, utiliser celle-ci. »`, e: `Prix de vente +50 %`, k: `Elle sourit. Un peu plus que l'autre.`, t: `Un milliardaire l'achète. Il pense avoir l'originale. Il a raison, en fait.` },
+    en: { n: `The backup Mona Lisa`, d: `On the back: "In case of theft, use this one."`, e: `Sale price +50%`, k: `She smiles. A little more than the other one.`, t: `A billionaire buys it. He thinks he has the original. He's right, actually.` } },
+  { id: `mammouth`, z: 5, p: .75, fr: { n: `Un mammouth congelé`, d: `Étiquette : « À décongeler pour Noël. 10 000 av. J.-C. »`, e: `Objets/s +25 %`, k: `Il ne fait rien. Mais il le fait avec beaucoup de présence.`, t: `Tu le jettes. Il faut une très grande poubelle. Gérard en a une.` },
+    en: { n: `A frozen mammoth`, d: `Label: "Thaw for Christmas. 10,000 BC."`, e: `Items/s +25%`, k: `He doesn't do anything. But he does it with great presence.`, t: `You throw it away. It takes a very big trash can. Gerard has one.` } },
+  { id: `doudou`, z: 6, p: .28, back: true, fr: { n: `Ton doudou`, d: `Celui que tu as perdu à 5 ans. Il t'attendait.`, e: `Objets/s x1,5`, k: `Tu le serres. Personne ne regarde. Si, Gérard. Il ne dira rien.`, t: `Tu essaies de le jeter. Tu n'y arrives pas. Personne n'y arrive.` },
+    en: { n: `Your stuffed animal`, d: `The one you lost when you were 5. It waited for you.`, e: `Items/s x1.5`, k: `You hug it. Nobody's looking. Well, Gerard is. He won't say a thing.`, t: `You try to throw it away. You can't. Nobody can.` } },
+  { id: `cles`, z: 6, p: .6, fr: { n: `Les clés de Mamie, 1996`, d: `Elle les a cherchées trente ans.`, e: `Clics x2`, k: `Mamie : « Mes clés ! » Un silence. « J'ai changé les serrures en 1997. Garde-les quand même. »`, t: `Mamie : « Mes clés ? Jette, j'ai changé les serrures en 1997. Mais dis-moi où elles étaient. » Tu ne sais pas comment le dire.` },
+    en: { n: `Grandma's keys, 1996`, d: `She looked for them for thirty years.`, e: `Clicks x2`, k: `Grandma: "My keys!" A silence. "I changed the locks in 1997. Keep them anyway."`, t: `Grandma: "My keys? Toss them, I changed the locks in 1997. But tell me where they were." You don't know how to put it.` } },
+  { id: `ticket`, z: 7, p: .35, back: true, fr: { n: `Ticket de bal, 1967`, d: `Bal des pompiers. Deux entrées. Une seule a servi.`, e: `Prix de vente x2`, k: `Papy : « C'est là que je l'ai rencontrée. Elle m'a marché sur le pied. Exprès. »`, t: `Papy le rattrape au vol. « Pas celui-là. » Il te le rend.` },
+    en: { n: `Dance ticket, 1967`, d: `Firemen's ball. Admits two. Only one was used.`, e: `Sale price x2`, k: `Grandpa: "That's where I met her. She stepped on my foot. On purpose."`, t: `Grandpa catches it mid-air. "Not that one." He gives it back.` } },
+  { id: `scrabble`, z: 8, p: .3, fr: { n: `Le Scrabble de Mme Lopez`, d: `Il manque toutes les voyelles. Elle joue sans.`, e: `Prix de vente +50 %`, k: `Mme Lopez : « Garde-le. Je connais les mots par cœur. Surtout ceux qui n'existent pas. »`, t: `Mme Lopez le récupère dans la poubelle sans un mot. Tu sens que tu as perdu quelque chose.` },
+    en: { n: `Mrs. Lopez's Scrabble`, d: `All the vowels are missing. She plays without them.`, e: `Sale price +50%`, k: `Mrs. Lopez: "Keep it. I know the words by heart. Especially the ones that don't exist."`, t: `Mrs. Lopez fishes it out of the trash without a word. You feel you've lost something.` } },
+  { id: `robe`, z: 9, p: .25, fr: { n: `Robe de bal, 1967`, d: `Un peu de boue sur l'ourlet. Il pleuvait.`, e: `Clics x2`, k: `Mamie la tient contre elle. « Elle me va encore. » Elle ne lui va plus. Personne ne dit rien.`, t: `Mamie : « Tu as raison. Elle est revenue à la mode, c'est insupportable. »` },
+    en: { n: `Ball gown, 1967`, d: `A little mud on the hem. It was raining.`, e: `Clicks x2`, k: `Grandma holds it against herself. "It still fits." It doesn't. Nobody says a thing.`, t: `Grandma: "You're right. It's back in fashion, it's unbearable."` } },
+  { id: `pave`, z: 9, p: .5, fr: { n: `Le pavé de 1968`, d: `Jamais lancé. « J'avais trop peur de rater. »`, e: `Objets/s x1,5`, k: `Mamie : « Garde-le. Un jour, tu sauras quoi en faire. »`, t: `Tu le lances dans la benne. Mamie applaudit. « Enfin. »` },
+    en: { n: `The 1968 cobblestone`, d: `Never thrown. "I was too scared I'd miss."`, e: `Items/s x1.5`, k: `Grandma: "Keep it. One day you'll know what to do with it."`, t: `You throw it into the dumpster. Grandma applauds. "Finally."` } },
+  { id: `gantspapy`, z: 10, p: .45, back: true, fr: { n: `Les gants de Papy`, d: `Trop grands, il y a trois ans.`, e: `Clics x3`, k: `Tu les enfiles. Ils sont à ta taille, maintenant.`, t: `Tu essaies de les jeter. Mamie te regarde. Tu les enfiles. Ils sont à ta taille, maintenant.` },
+    en: { n: `Grandpa's gloves`, d: `Too big, three years ago.`, e: `Clicks x3`, k: `You put them on. They fit now.`, t: `You try to throw them away. Grandma looks at you. You put them on. They fit now.` } },
+];
+
+const CALLS = [
+  [`Mamie : « Tu manges bien ? Tu as l'air maigre au téléphone. »`, `Grandma: "Are you eating? You sound thin on the phone."`],
+  [`Mamie : « Ici, ils font de la gym douce le mardi. Je n'y vais pas. Je n'ai rien de doux. »`, `Grandma: "They do gentle yoga here on Tuesdays. I don't go. There's nothing gentle about me."`],
+  [`Mamie : « N'oublie pas d'arroser le ficus. Il est en plastique, mais il aime l'attention. »`, `Grandma: "Don't forget to water the ficus. It's plastic, but it likes the attention."`],
+  [`Mamie : « J'ai vu Kevin à la télé. Enfin, sur son téléphone. Enfin, il me l'a montré. »`, `Grandma: "I saw Kevin on TV. Well, on his phone. Well, he showed me."`],
+  [`Mamie : « Madame Lopez, ma voisine, triche au Scrabble. Je triche mieux. »`, `Grandma: "Mrs. Lopez next door cheats at Scrabble. I cheat better."`],
+  [`Mamie : « Si tu trouves des billets, ce sont des francs. Garde-les, ils vont revenir. »`, `Grandma: "If you find banknotes, they're francs. Keep them, they'll come back."`],
+  [`Mamie : « Gérard est passé me voir. Il m'a apporté des fleurs. Les miennes, de mon jardin. »`, `Grandma: "Gerard came to see me. He brought flowers. Mine, from my garden."`],
+  [`Mamie : « Je ne t'appelle pas pour rien. Je t'appelle pour savoir si tu jettes des choses. »`, `Grandma: "I'm not calling for nothing. I'm calling to check if you're throwing things away."`],
+  [`Mamie : « Le kiné m'a dit de marcher. J'ai marché jusqu'au téléphone. »`, `Grandma: "The physio told me to walk. I walked to the phone."`],
+  [`Mamie : « Il y a un monsieur ici qui dit avoir connu ton grand-père. Il ment. Ton grand-père ne connaissait personne. »`, `Grandma: "There's a man here who says he knew your grandfather. He's lying. Your grandfather didn't know anybody."`],
+  [`Mamie : « Tu as mis un pull ? Il fait froid dans les greniers. Et dans la vie. »`, `Grandma: "Are you wearing a sweater? It's cold in attics. And in life."`],
+  [`Mamie : « Ne me rappelle pas pendant mon jeu télé. »`, `Grandma: "Don't call me back during my game show."`],
+  [`Mamie : « Ici, le dessert, c'est une compote. Tous les jours. Je compte les jours en compotes. »`, `Grandma: "Dessert here is applesauce. Every day. I count the days in applesauce."`],
+  [`Mamie : « Dis à Kevin que filmer n'est pas un métier. Ensuite, dis-lui que je l'aime. Dans cet ordre. »`, `Grandma: "Tell Kevin that filming isn't a job. Then tell him I love him. In that order."`],
+  [`Mamie : « Tu sais ce qui me manque ? Rien. C'est ça qui m'inquiète. »`, `Grandma: "You know what I miss? Nothing. That's what worries me."`],
+  [`Mamie : « Les pots de yaourt, je les comptais. J'en avais 413. »`, `Grandma: "I counted the yogurt pots. I had 413."`],
+  [`Mamie : « Le papier peint de ma chambre est moche. Comme celui du grenier. Je me sens chez moi. »`, `Grandma: "The wallpaper in my room is ugly. Like the one in the attic. I feel at home."`],
+  [`Mamie : « On m'a offert une tablette. Je m'en sers pour caler la commode. »`, `Grandma: "They gave me a tablet. I use it to level the dresser."`],
+  [`Mamie : « Tu travailles trop. Enfin, tu tries trop. Bref, continue. »`, `Grandma: "You work too hard. Well, you sort too hard. Anyway, keep going."`],
+  [`Mamie : « J'appelais juste pour entendre une voix. Bon. Ça suffit. »`, `Grandma: "I just called to hear a voice. Right. That's enough."`],
+];
+const VOICEMAILS = [
+  [`Messagerie : « C'est Mamie. Rappelle-moi. Non, ne rappelle pas, je fais la sieste. »`, `Voicemail: "It's Grandma. Call me back. No, don't, I'm napping."`],
+  [`Messagerie : trois minutes de télévision, puis : « Bon. »`, `Voicemail: three minutes of television, then: "Well."`],
+  [`Messagerie : « C'était pour rien. Enfin, pour toi. »`, `Voicemail: "It was nothing. For you, anyway."`],
+  [`Messagerie : « Je sais que tu es là. Le téléphone le sait. »`, `Voicemail: "I know you're there. The phone knows."`],
+  [`Messagerie : « Gérard me dit de te dire bonjour. Je ne lui dis pas bonjour, moi. »`, `Voicemail: "Gerard says to say hello. I don't say hello to him, mind you."`],
+  [`Messagerie : « Ce message s'autodétruira. Je ne sais pas comment, mais il le fera. »`, `Voicemail: "This message will self-destruct. I don't know how, but it will."`],
+];
+
+const CALLS2 = [
+  [`Gérard : « Je garde la maison. Enfin, je garde la tondeuse. C'est pareil. »`, `Gerard: "I'm watching the house. Well, the lawnmower. Same thing."`],
+  [`Gérard : « Le voisin d'en face a acheté une benne. Je crois qu'il veut te faire de la concurrence. »`, `Gerard: "The guy across the street bought a dumpster. I think he wants to compete with you."`],
+  [`Gérard : « Tu savais que ta grand-mère m'avait mis un râteau en 1966 ? Avant ton grand-père. Je dis ça, je dis rien. »`, `Gerard: "Did you know your grandmother turned me down in 1966? Before your grandfather. Just saying."`],
+  [`Gérard : « J'ai reçu une autre médaille du travail. Je ne sais toujours pas pour quoi. »`, `Gerard: "I got another long-service medal. I still don't know what for."`],
+  [`Gérard : « Kevin m'a filmé. Je suis connu, maintenant. Les gens m'appellent Gérard. »`, `Gerard: "Kevin filmed me. I'm famous now. People call me Gerard."`],
+  [`Gérard : « Dis à ta grand-mère que je ne l'appelle pas. Enfin, si. Enfin, dis-lui. »`, `Gerard: "Tell your grandmother I'm not calling her. Well, I am. Well, tell her."`],
+  [`Gérard : « Rien. Je voulais juste entendre quelqu'un trier. »`, `Gerard: "Nothing. I just wanted to hear someone sorting."`],
+  [`Gérard : « J'ai rangé mon garage. Il y avait trois tondeuses. Aucune n'est à moi. »`, `Gerard: "I tidied my garage. There were three lawnmowers. None of them are mine."`],
+];
+const VOICEMAILS2 = [
+  [`Messagerie : « C'est Gérard. Je rappellerai. Je ne rappelle jamais. »`, `Voicemail: "It's Gerard. I'll call back. I never call back."`],
+  [`Messagerie : deux minutes de tondeuse, puis : « Pardon, mauvaise poche. »`, `Voicemail: two minutes of lawnmower, then: "Sorry, wrong pocket."`],
+  [`Messagerie : « C'est Gérard. C'était pour la tondeuse. Laisse tomber. »`, `Voicemail: "It's Gerard. It was about the lawnmower. Never mind."`],
+];
+
+const A = [
+  { id: `first`, c: S => S.sorted >= 1, fr: [`Premier tri`, `Trier un objet.`], en: [`First sort`, `Sort one item.`] },
+  { id: `pot412`, c: S => S.sorted >= 412, fr: [`Pot n° 412`, `Trier 412 objets.`], en: [`Pot #412`, `Sort 412 items.`] },
+  { id: `clic1k`, c: S => S.stats.clicks >= 1000, fr: [`Tendinite du poignet`, `Cliquer 1 000 fois.`], en: [`Wrist tendinitis`, `Click 1,000 times.`] },
+  { id: `clic5k`, c: S => S.stats.clicks >= 5000, fr: [`Coude du trieur`, `Cliquer 5 000 fois.`], en: [`Sorter's elbow`, `Click 5,000 times.`] },
+  { id: `gerard10`, c: S => S.up.gerard >= 10, fr: [`Lotissement Gérard`, `Avoir 10 Gérard.`], en: [`Gerard estate`, `Own 10 Gerards.`] },
+  { id: `kevin10`, c: S => S.up.kevin >= 10, fr: [`Collectif Kevin`, `Avoir 10 Kevin.`], en: [`Kevin collective`, `Own 10 Kevins.`] },
+  { id: `calls10`, c: S => S.stats.calls >= 10, fr: [`Petit-enfant modèle`, `Décrocher 10 appels.`], en: [`Model grandchild`, `Answer 10 calls.`] },
+  { id: `calls30`, c: S => S.stats.calls >= 30, fr: [`Abonné à Mamie`, `Décrocher 30 appels.`], en: [`Grandma subscriber`, `Answer 30 calls.`] },
+  { id: `missed5`, c: S => S.stats.missed >= 5, fr: [`Messagerie pleine`, `Rater 5 appels.`], en: [`Mailbox full`, `Miss 5 calls.`] },
+  { id: `keep5`, c: S => Object.values(S.finds).filter(v => v === `k`).length >= 5, fr: [`Ça peut servir`, `Garder 5 trouvailles.`], en: [`It might come in handy`, `Keep 5 finds.`] },
+  { id: `throw3`, c: S => Object.values(S.finds).filter(v => v === `t`).length >= 3, fr: [`Minimaliste`, `Jeter 3 trouvailles.`], en: [`Minimalist`, `Throw away 3 finds.`] },
+  { id: `offline`, c: S => S.stats.offline > 0, fr: [`Gérard s'en occupe`, `Gagner de l'argent pendant ton absence.`], en: [`Gerard's got it`, `Earn money while away.`] },
+  { id: `bilingue`, c: S => S.stats.lang > 0, fr: [`Bilingue`, `Changer de langue.`], en: [`Bilingual`, `Switch languages.`] },
+  { id: `million`, c: S => S.money >= 1e6, fr: [`Millionnaire du vide-grenier`, `Avoir 1 M € d'un coup.`], en: [`Yard sale millionaire`, `Hold €1M at once.`] },
+  { id: `billion`, c: S => S.money >= 1e9, fr: [`Milliardaire en cartons`, `Avoir 1 B € d'un coup.`], en: [`Cardboard billionaire`, `Hold €1B at once.`] },
+  { id: `ville`, c: S => S.seen.includes(`ville`), fr: [`Fonctionnaire honoraire`, `Atteindre le grenier de la ville.`], en: [`Honorary civil servant`, `Reach the city attic.`] },
+  { id: `monde`, c: S => S.seen.includes(`monde`), fr: [`Patrimoine mondial`, `Atteindre le grenier du monde.`], en: [`World heritage`, `Reach the attic of the world.`] },
+  { id: `papy`, c: S => S.seen.includes(`papy0`), fr: [`Retrouvailles`, `Atteindre le dernier grenier.`], en: [`Reunion`, `Reach the last attic.`] },
+  { id: `fin`, c: S => S.act === 2, fr: [`Il n'y avait presque rien`, `Vider le grenier.`], en: [`There was hardly anything`, `Empty the attic.`] },
+  { id: `rapide`, c: S => S.act === 2 && S.stats.t1 < 5400, fr: [`Pas le temps pour la compote`, `Vider le grenier en moins de 90 minutes de jeu.`], en: [`No time for applesauce`, `Empty the attic in under 90 minutes of play.`] },
+  { id: `lance`, c: S => S.finds.pave === `t`, fr: [`Enfin`, `Secret.`], en: [`Finally`, `Secret.`] },
+  { id: `boucle`, c: S => S.done, fr: [`La boucle`, `Secret.`], en: [`The loop`, `Secret.`] },
+];
+
+const SAVE = `legrenier_v1`;
+const fresh = () => ({ money: 0, sorted: 0, act: 1, up: Object.fromEntries(U.map(u => [u.id, 0])), finds: {}, seen: [], pending: [], log: [], ach: [],
+  stats: { clicks: 0, calls: 0, missed: 0, time: 0, t1: 0, offline: 0, lang: 0 }, phone: { next: 40, ring: 0 }, boost: 0,
+  lang: navigator.language.startsWith(`fr`) ? `fr` : `en`, last: Date.now() });
+let S = fresh();
+
+const ACT1 = 7; // index of the last zone of act I
+const kept = id => S.finds[id] === `k`;
+const END = Z[Z.length - 1].end;
+const cap = () => S.act === 1 ? A1 : END;
+const zstart = i => i ? Z[i - 1].end : 0;
+const atOf = x => zstart(x.z) + x.p * (Z[x.z].end - zstart(x.z));
+const open = x => !(x.z > ACT1 && S.act === 1);
+const zi = () => { const i = Z.findIndex(z => S.sorted < z.end); return Math.min(i < 0 ? Z.length - 1 : i, S.act === 1 ? ACT1 : Z.length - 1); };
+const m = (id, x) => kept(id) ? x : 1;
+const has = (id, x) => S.up[id] ? x : 1;
+const tout = () => (S.boost > 0 ? 3 : 1) * (S.act === 2 ? 10 : 1);
+const perSec = () => (S.up.gerard * 0.5 * m(`minitel`, 1.5) * has(`cafe`, 3) * has(`tondelec`, 3) * m(`medaille`, 5)
+  + S.up.kevin * 3 * has(`ringlight`, 3) * has(`tiktok`, 3) * has(`sponsor`, 3)
+  + S.up.benne * 20 * has(`benne30`, 3) * has(`tri`, 3)
+  + S.up.fonct * 150 * m(`parapluie`, 2) * has(`agrafeuse`, 3) * has(`prime`, 3)
+  + S.up.dem * 1000 * has(`galettes`, 3) * has(`cidre`, 3)
+  + S.up.cargo * 8000 * has(`conteneurs`, 3) * has(`capitaine`, 3)
+  + S.up.mont * 60000 * has(`vents`, 3) * has(`helium`, 3)
+  + S.up.petits * 500000 * has(`gouter`, 3) * has(`poche`, 3)
+  + S.up.residents * 5e6 * has(`deambulateur`, 3) * has(`loto`, 3)
+  + S.up.facteurs * 2e10 * has(`timbre`, 3) * has(`tournee`, 3))
+  * has(`compote`, 2) * has(`kevinvrai`, 2) * has(`valise`, 3) * has(`motpapy`, 3) * has(`brouillon`, 3) * has(`tondeuse3`, 3) * has(`motcompte`, 3)
+  * m(`calendrier`, 1.1) * m(`pot`, 1.25) * m(`boussole`, 1.25) * m(`mammouth`, 1.25) * m(`doudou`, 1.5) * m(`pave`, 1.5) * has(`technique`, 3) * tout();
+const clickPow = () => (1 + S.up.gants + (kept(`dentier`) ? 2 : 0)) * has(`sacs`, 2) * m(`photo`, 1.5) * m(`crepes`, 2) * m(`cles`, 2) * m(`robe`, 2) * m(`gantspapy`, 3) * has(`gantsor`, 10) * has(`carnet`, 5) * has(`stylo`, 5) * tout()
+  + (S.up.methode ? perSec() * 0.03 : 0);
+const price = () => Z[zi()].mult * has(`annonces`, 2) * has(`brocante`, 3) * has(`tampon`, 3) * has(`monument`, 4) * has(`encheres`, 5)
+  * m(`fondue`, 1.1) * m(`boutons`, 1.25) * m(`metre`, 1.25) * m(`joconde`, 1.5) * m(`ticket`, 2) * m(`scrabble`, 1.5) * has(`viral`, 3) * (1 + 0.02 * S.ach.length);
+const cost = u => Math.ceil(u.k ? u.base * u.k ** S.up[u.id] : u.base);
+const unlocked = u => (!u.req || S.seen.includes(u.req)) && (!u.need || S.up[u.need[0]] >= u.need[1]);
+const done = u => u.k ? S.up[u.id] >= u.max : S.up[u.id] > 0;
+const throwVal = () => Math.max(20, (perSec() + clickPow() * 3) * price() * 60);
+
+function log(e) { S.log.push(e); if (ready) addLog(e); }
+
+function checks() {
+  for (const e of E) if (!S.seen.includes(e.id) && open(e) && (e.when ? e.when(S) : S.sorted >= atOf(e))) { S.seen.push(e.id); log({ fr: e.fr, en: e.en, c: e.p === 0 && e.z ? `z` : `` }); }
+  for (const f of F) if (!(f.id in S.finds) && !S.pending.includes(f.id) && open(f) && S.sorted >= atOf(f)) S.pending.push(f.id);
+  if (S.act === 1 && S.sorted >= A1 && !S.pending.includes(`END1`)) S.pending.push(`END1`);
+  if (S.act === 2 && S.sorted >= END && !S.done && !S.pending.includes(`END`)) S.pending.push(`END`);
+  for (const a of A) if (!S.ach.includes(a.id) && a.c(S)) { S.ach.push(a.id); if (ready) toast(a[S.lang][0]); }
+}
+
+function addItems(n) {
+  n = Math.min(n, cap() - S.sorted);
+  if (n <= 0) return 0;
+  const earned = n * price();
+  S.money += earned; S.sorted += n;
+  checks();
+  return earned;
+}
+
+function step(dt) {
+  if (S.done) return;
+  S.stats.time += dt;
+  if (S.boost > 0) S.boost = Math.max(0, S.boost - dt);
+  // the phone waits while a find or an ending is on screen
+  if (S.seen.includes(`yaourt`) && !S.pending.length) {
+    if (S.phone.ring > 0) { S.phone.ring -= dt; if (S.phone.ring <= 0) missCall(); }
+    else if ((S.phone.next -= dt) <= 0) { S.phone.ring = 12; S.phone.next = 60 + Math.random() * 60; }
+  }
+  addItems(perSec() * dt);
+}
+
+// act I: Grandma calls. act II: she's with you, so Gerard calls
+const calls = () => S.act === 2 ? [CALLS2, VOICEMAILS2] : [CALLS, VOICEMAILS];
+function answer() {
+  if (S.phone.ring <= 0) return;
+  S.phone.ring = 0; S.boost = 30;
+  const pool = calls()[0], [fr, en] = pool[S.stats.calls++ % pool.length];
+  log({ fr, en });
+  checks();
+}
+function missCall() {
+  S.phone.ring = 0;
+  const pool = calls()[1], [fr, en] = pool[S.stats.missed++ % pool.length];
+  log({ fr, en, c: S.act === 2 ? `g` : `m` });
+  checks();
+}
+
+function buy(id) {
+  const u = U.find(u => u.id === id), c = cost(u);
+  if (S.money < c || done(u)) return;
+  S.money -= c; S.up[id]++;
+  checks();
+}
+
+function choose(id, keep) {
+  const f = F.find(f => f.id === id);
+  S.pending = S.pending.filter(p => p !== id);
+  if (keep || f.back) S.finds[id] = `k`;
+  else { S.money += throwVal(); S.finds[id] = `t`; }
+  log({ fr: f.fr[keep ? `k` : `t`], en: f.en[keep ? `k` : `t`], c: `f` });
+  checks();
+}
+
+// act II starts from scratch: money and crew reset, finds and achievements stay
+function startAct2() {
+  S.stats.t1 = S.stats.time;
+  S.act = 2; S.money = 0; S.boost = 0; S.phone = { next: 45, ring: 0 };
+  for (const k in S.up) S.up[k] = 0;
+  checks();
+}
+
+function finale(lang) {
+  const fr = lang === `fr`, fondue = kept(`fondue`)
+    ? (fr ? `Dedans : un service à fondue. Le tien, celui que tu avais gardé. Papy y a ajouté une huitième fourchette.` : `Inside: a fondue set. Yours, the one you kept. Grandpa added an eighth fork.`)
+    : (fr ? `Dedans : un service à fondue. Celui que tu avais jeté. Papy l'avait récupéré.` : `Inside: a fondue set. The one you threw away. Grandpa had picked it up.`);
+  return fr
+    ? `Tu redescends. Le ciel, le monde, la France, la ville, la rue, le grenier derrière le grenier, le grenier.\n\nMamie est dans sa chambre, à la résidence. Tu poses la boîte sur ses genoux. ${fondue}\n\nElle rit. Elle pleure un peu. Elle dit : « Tu vois. Il n'y avait presque rien. »\n\nTu ouvres enfin la lettre. C'est ton écriture. Elle dit : « Monte la voir plus souvent. Elle, elle ne monte plus. »`
+    : `You go back down. The sky, the world, France, the city, the street, the attic behind the attic, the attic.\n\nGrandma is in her room at the retirement home. You set the box on her lap. ${fondue}\n\nShe laughs. She cries a little. She says: "See? There was hardly anything."\n\nYou finally open the letter. It's your handwriting. It says: "Go up and see her more often. She doesn't go up anymore."`;
+}
+function finale2(lang) {
+  return lang === `fr`
+    ? `Mamie corrige deux fautes dans la lettre et en ajoute une.\n\nVous redescendez ensemble, une marche à la fois. Elle insulte toujours chaque marche par son prénom, mais plus doucement.\n\nLa lettre part. Quelque part, trois ans plus tôt, quelqu'un la trouve dans un carton et la met dans sa poche sans l'ouvrir.\n\nEn bas de l'escalier, Mamie se retourne. « Bon. Il faudra qu'on parle de la cave. »`
+    : `Grandma corrects two mistakes in the letter and adds one.\n\nYou go back down together, one step at a time. She still calls each step a name, but more gently.\n\nThe letter goes out. Somewhere, three years earlier, someone finds it in a box and puts it in their pocket without opening it.\n\nAt the bottom of the stairs, Grandma turns around. "Right. We'll need to talk about the basement."`;
+}
+
+// ---- UI ----
+let ready = false, logQ = [], lastInk = 0, shownZ = -1;
+const $ = id => document.getElementById(id);
+const t = () => L[S.lang];
+function fmt(n) {
+  if (n < 1000) return n < 10 && n % 1 ? n.toFixed(1) : Math.floor(n).toString();
+  const u = [`K`, `M`, `B`, `T`, `Qa`, `Qi`, `Sx`, `Sp`, `Oc`, `No`, `Dc`, `UDc`, `DDc`, `TDc`, `QaDc`, `QiDc`, `SxDc`, `SpDc`, `OcDc`, `NoDc`, `Vg`]; let i = -1;
+  while (n >= 1000 && i < u.length - 1) { n /= 1000; i++; }
+  return n.toFixed(n < 10 ? 2 : n < 100 ? 1 : 0) + u[i];
+}
+const euros = n => S.lang === `fr` ? `${fmt(n)} €` : `€${fmt(n)}`;
+const hms = s => `${Math.floor(s / 3600)} h ${String(Math.floor(s / 60) % 60).padStart(2, `0`)} min`;
+
+function addLog(e, now) {
+  if (e.c === `a`) return; // older saves logged achievements in the journal
+  const p = document.createElement(`p`), txt = e[S.lang];
+  p.className = /^(Mamie|Grandma)/.test(txt) ? `m` : /^(Gérard|Gerard)/.test(txt) ? `g` : e.c || ``;
+  p.textContent = txt;
+  if (now) $(`journal`).prepend(p); else logQ.push(p);
+}
+// new journal lines come in one at a time so there's time to read them; a backlog drains faster
+function inkJournal() {
+  if (!logQ.length || performance.now() - lastInk < (logQ.length > 5 ? 900 : 2600)) return;
+  lastInk = performance.now();
+  const p = logQ.shift();
+  p.classList.add(`new`);
+  $(`journal`).prepend(p);
+  $(`journal`).scrollTop = 0;
+}
+function toast(name) {
+  const el = $(`toast`);
+  el.textContent = t().achGot(name);
+  el.classList.remove(`on`); void el.offsetWidth; el.classList.add(`on`);
+}
+
+let upEls = {}, upSig = ``;
+// crew keeps its order, upgrades are listed by price, bought/maxed ones move to the bottom list
+const shop = () => U.filter(u => unlocked(u) && !done(u));
+function buildUps() {
+  const list = shop(), owned = U.filter(u => S.up[u.id] && done(u)), sig = list.map(u => u.id).join() + `|` + owned.map(u => u.id).join() + S.lang;
+  if (sig === upSig) return;
+  upSig = sig; upEls = {};
+  $(`ups`).innerHTML = ``; $(`ups2`).innerHTML = ``; $(`owned`).innerHTML = ``;
+  for (const u of [...list].sort((a, b) => (a.k ? 0 : a.base) - (b.k ? 0 : b.base))) {
+    const b = document.createElement(`button`);
+    b.className = `up`; b.onclick = () => buy(u.id);
+    $(u.k ? `ups` : `ups2`).append(b); upEls[u.id] = b;
+  }
+  for (const u of owned) {
+    const c = document.createElement(`span`);
+    c.className = `chip`; c.title = u[S.lang][1];
+    c.textContent = u[S.lang][0] + (u.k ? ` x${S.up[u.id]}` : ``);
+    $(`owned`).append(c);
+  }
+  $(`h-up`).hidden = !list.some(u => u.k);
+  $(`h-up2`).hidden = !list.some(u => !u.k);
+  $(`h-own`).hidden = !owned.length;
+}
+
+function buildFinds() {
+  const list = F.filter(f => f.id in S.finds);
+  $(`finds`).innerHTML = list.length ? `` : `<div class="small">${t().none}</div>`;
+  for (const f of list) {
+    const d = document.createElement(`div`), x = f[S.lang], em = document.createElement(`em`);
+    d.className = `find` + (kept(f.id) ? `` : ` t`);
+    d.textContent = `${x.n} - `;
+    em.textContent = kept(f.id) ? x.e : t().thrown;
+    d.append(em);
+    $(`finds`).append(d);
+  }
+}
+
+let achCount = -1;
+function buildAchs() {
+  if (achCount === S.ach.length) return;
+  achCount = S.ach.length;
+  $(`h-ach`).textContent = `${t().ach} ${S.ach.length}/${A.length}`;
+  $(`achnote`).textContent = t().achBonus;
+  $(`achs`).innerHTML = ``;
+  for (const a of A) {
+    const c = document.createElement(`span`), on = S.ach.includes(a.id);
+    c.className = `chip` + (on ? ` on` : ``);
+    c.textContent = on ? a[S.lang][0] : `?`;
+    c.title = a[S.lang][1];
+    $(`achs`).append(c);
+  }
+}
+
+const endText = (story, last) => story + `\n\n` + t().stats(hms(S.stats.time), fmt(S.stats.clicks), S.stats.calls, S.stats.calls + S.stats.missed, fmt(S.sorted))
+  + `\n\n` + t().achEnd(S.ach.length, A.length, A.filter(a => S.ach.includes(a.id)).map(a => a[S.lang][0]).join(`, `)) + (last ? `\n\n` + t().thanks : ``);
+
+function showModal() {
+  if ($(`modal`).classList.contains(`on`) || !S.pending.length) return;
+  const id = S.pending[0], mb = $(`m-b`), close = () => { $(`modal`).classList.remove(`on`); buildFinds(); save(); };
+  mb.innerHTML = ``;
+  const btn = (label, sub, fn) => {
+    const b = document.createElement(`button`);
+    b.textContent = label;
+    if (sub) { const s = document.createElement(`small`); s.textContent = sub; b.append(s); }
+    b.onclick = () => { fn(); close(); };
+    mb.append(b);
+  };
+  if (id === `END1`) {
+    $(`m-t`).textContent = t().end1;
+    $(`m-d`).textContent = endText(finale(S.lang), false);
+    btn(t().surprise, t().surpriseSub, () => { S.pending.shift(); startAct2(); });
+  } else if (id === `END`) {
+    $(`m-t`).textContent = t().end;
+    $(`m-d`).textContent = endText(finale2(S.lang), true);
+    btn(t().ok, ``, () => { S.pending.shift(); S.done = 1; checks(); });
+  } else {
+    const f = F.find(f => f.id === id), x = f[S.lang];
+    $(`m-t`).textContent = x.n; $(`m-d`).textContent = x.d;
+    btn(t().keep, x.e, () => choose(id, true));
+    btn(t().throw, f.back ? `?` : `+${euros(throwVal())}`, () => choose(id, false));
+  }
+  $(`modal`).classList.add(`on`);
+}
+
+function render() {
+  const i = zi(), z = Z[i], start = zstart(i), act = i > ACT1 ? 2 : 1;
+  const zl = act === 2 ? t().zl(i - ACT1, Z.length - 1 - ACT1, 2) : t().zl(i + 1, ACT1 + 1, 1);
+  if (shownZ !== i) {
+    if (shownZ >= 0) {
+      $(`b-s`).textContent = i === ACT1 + 1 ? t().later : zl;
+      $(`b-t`).textContent = z[S.lang];
+      const b = $(`banner`); b.classList.remove(`on`); void b.offsetWidth; b.classList.add(`on`);
+    }
+    shownZ = i; document.body.dataset.z = i;
+  }
+  $(`zlabel`).textContent = zl;
+  $(`zone`).textContent = z[S.lang];
+  $(`bar`).style.width = Math.min(100, (S.sorted - start) / (z.end - start) * 100) + `%`;
+  $(`money`).textContent = euros(S.money);
+  $(`rates`).innerHTML = ``;
+  $(`rates`).append(t().rates(fmt(clickPow()), fmt(perSec()), fmt(price())));
+  for (const txt of [S.act === 2 && t().act2, S.boost > 0 && t().boost(Math.ceil(S.boost))]) {
+    if (!txt) continue;
+    const b = document.createElement(`div`); b.className = `boost`; b.textContent = txt; $(`rates`).append(b);
+  }
+  $(`sort`).disabled = S.sorted >= cap();
+  $(`counters`).innerHTML = ``;
+  for (const txt of [`${t().nClicks} : ${fmt(S.stats.clicks)}`, `${t().nSorted} : ${fmt(S.sorted)}`]) {
+    const c = document.createElement(`span`); c.className = `chip stat`; c.textContent = S.lang === `fr` ? txt : txt.replace(` :`, `:`); $(`counters`).append(c);
+  }
+  $(`phone`).hidden = !(S.phone.ring > 0) || S.done;
+  $(`phone`).textContent = t().phone(Math.ceil(S.phone.ring));
+  buildUps();
+  for (const u of shop()) {
+    const b = upEls[u.id], [nm, d] = u[S.lang];
+    const html = `<b>${nm}${u.k ? ` <span class="n">${S.up[u.id]}/${u.max}</span>` : ``}</b><span class="c">${euros(cost(u))}</span><span class="d">${d}</span>`
+      + (u.k ? `<span class="pips"><i style="width:${S.up[u.id] / u.max * 100}%"></i></span>` : ``);
+    if (b.innerHTML !== html) b.innerHTML = html;
+    b.disabled = S.money < cost(u);
+  }
+  inkJournal();
+  buildAchs();
+  showModal();
+}
+
+function renderStatic() {
+  document.documentElement.lang = S.lang;
+  document.title = t().title;
+  $(`title`).textContent = t().title;
+  $(`sortl`).textContent = t().sort;
+  $(`h-up`).textContent = t().ups; $(`h-up2`).textContent = t().ups2; $(`h-own`).textContent = t().own; upSig = ``;
+  $(`h-finds`).textContent = t().finds; $(`h-j`).textContent = t().j;
+  $(`lang`).textContent = t().lang; $(`reset`).textContent = t().reset; $(`savebtn`).textContent = t().save;
+  $(`journal`).innerHTML = ``; logQ = []; S.log.forEach(e => addLog(e, true));
+  $(`last`).textContent = ``;
+  achCount = -1;
+  buildFinds();
+}
+
+function save() { S.last = Date.now(); try { localStorage.setItem(SAVE, JSON.stringify(S)); } catch (e) {} }
+function load() {
+  try {
+    const d = JSON.parse(localStorage.getItem(SAVE)), f = fresh();
+    if (d) S = Object.assign(f, d, { up: Object.assign(f.up, d.up), stats: Object.assign(f.stats, d.stats), phone: Object.assign(f.phone, d.phone) });
+  } catch (e) {}
+  // saves that finished act I before act II existed replay the ending, then act II starts
+  if (S.act === 1) { S.done = 0; S.pending = S.pending.filter(p => p !== `END`); }
+  // offline: money only, the story never advances while away
+  const dt = Math.min((Date.now() - S.last) / 1000, 8 * 3600);
+  if (dt > 60 && perSec() > 0 && !S.done) {
+    const g = perSec() * price() * dt / 2;
+    S.money += g; S.stats.offline += g;
+    log({ fr: L.fr.away(fmt(g)), en: L.en.away(fmt(g)) });
+  }
+}
+
+$(`sort`).onclick = e => {
+  const n = clickPow(), earned = addItems(n), box = e.currentTarget;
+  if (!earned) return;
+  S.stats.clicks++;
+  const items = Z[zi()].items[S.lang];
+  $(`last`).textContent = t().last(items[Math.floor(Math.random() * items.length)], fmt(earned));
+  box.classList.remove(`shake`); void box.offsetWidth; box.classList.add(`shake`);
+  const fx = document.createElement(`span`), r = box.getBoundingClientRect();
+  fx.className = `fx`; fx.textContent = `+${fmt(n)}`;
+  fx.style.left = ((e.clientX || r.left + r.width / 2) - r.left) + `px`;
+  fx.style.top = ((e.clientY || r.top + r.height / 2) - r.top - 10) + `px`;
+  box.append(fx);
+  setTimeout(() => fx.remove(), 800);
+};
+// export / import: the save as base64 text, so it survives a cleared browser
+function saveBox() {
+  if ($(`modal`).classList.contains(`on`)) return;
+  const mb = $(`m-b`), ta = document.createElement(`textarea`), msg = document.createElement(`div`);
+  ta.rows = 5; ta.value = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  msg.className = `small`;
+  $(`m-t`).textContent = t().save; $(`m-d`).textContent = t().saveD; $(`m-d`).append(ta, msg);
+  mb.innerHTML = ``;
+  const btn = (label, fn) => { const b = document.createElement(`button`); b.textContent = label; b.onclick = fn; mb.append(b); };
+  btn(t().copy, () => { ta.select(); navigator.clipboard?.writeText(ta.value).catch(() => {}); msg.textContent = t().copied; });
+  btn(t().imp, () => {
+    try {
+      const d = JSON.parse(decodeURIComponent(escape(atob(ta.value.trim()))));
+      if (typeof d.sorted !== `number` || !Array.isArray(d.log)) throw 0;
+      removeEventListener(`beforeunload`, save);
+      localStorage.setItem(SAVE, JSON.stringify(d));
+      location.reload();
+    } catch (e) { msg.textContent = t().bad; }
+  });
+  btn(t().close, () => $(`modal`).classList.remove(`on`));
+  $(`modal`).classList.add(`on`);
+}
+$(`savebtn`).onclick = saveBox;
+$(`phone`).onclick = answer;
+$(`lang`).onclick = () => { S.lang = S.lang === `fr` ? `en` : `fr`; S.stats.lang++; checks(); renderStatic(); render(); };
+$(`reset`).onclick = () => { if (confirm(t().resetQ)) { S = fresh(); save(); location.reload(); } };
+
+load();
+checks();
+renderStatic();
+ready = true;
+let prev = performance.now();
+setInterval(() => { const now = performance.now(); step((now - prev) / 1000); prev = now; render(); }, 100);
+setInterval(save, 5000);
+addEventListener(`beforeunload`, save);
+</script>
+</body>
+</html>
